@@ -41,8 +41,15 @@
     var row=[];
     var coef=2;//the width and length factor of each pixel.
 
-    var hsl_start=[0.3,0,0.1];
-    var hsl_end=[0.3,1,0.5];//h s l
+    pmax=-1;
+    pmin=1;
+
+    //Figure 1(a)
+    var hsl_start=[0,0,0];
+    var hsl_end=[0,0,1];//h s l
+    //Figure 1(b)
+    //var hsl_start=[0,0,0];
+    //var hsl_end=[0,1,1];//h s l
     //=========================================================
     //hsl to rgb
     //referred to https://en.wikipedia.org/wiki/HSL_and_HSV
@@ -107,6 +114,7 @@
         return tmp;
     }
 
+    //Asynchronized loading of data from data1
     d3.text("data1.txt", function(error, text) {
         if (error) throw error;
 
@@ -137,6 +145,7 @@
 
                 //calculate the rgb based on row.columns[j]
                 ratio=1-(+row.columns[j]);
+                //ratio=Math.sqrt(ratio);
                 //interpolate start and end to draw the image
                 //
                 hsl_value=hsl_interpolate(hsl_start,hsl_end,ratio);
@@ -152,8 +161,16 @@
                     value:hsl2rgb(hsl_value[0],hsl_value[1],hsl_value[2])//[+row.columns[j],+row.columns[j],+row.columns[j]]
                 });
 
+                //log max min
+                if(pmax<(+row.columns[j])){
+                    pmax=+row.columns[j];
+                }
+                if(pmin>(+row.columns[j])) {
+                    pmin = +row.columns[j];
+                }
             }
         }
+
 
         //initialize bar data
         for(j=0;j<height;++j){
@@ -175,18 +192,18 @@
         //log the pixels
         //render the canvas
         //Add an svg in the body with the size of (w,h)
-        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef),
-                margin = 30,
-                width = width*coef,
-                height = height*coef;
+        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef);
+                //margin = 30,
+                //width = width*coef,
+                //height = height*coef;
         console.log('done');
         //add an rgb figure into the svg file
         rgb_node=svg.append('g').attr('class','nodes all');
 
-        bar_svg=d3.select('body').append('svg').attr('width',30*coef).attr('height',height),
-                margin = 30,
-                width = 10*coef,
-                height = height*coef;
+        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef);
+                //margin = 30,
+                //width = 10*coef,
+                //height = height*coef;
 
         bar_node=bar_svg.append('g').
         attr('class','nodes bar').attr('transform','translate('+(20)+',0)');
@@ -205,18 +222,36 @@
         //add a contour bar
         bar_node.selectAll('rect')
                 .data(bar_data).enter().append('rect')
-                .attr('x',function (node) {
-                    return node.x*coef*10;
-                }).attr('y',function(node){
-            return node.y*coef;})
+                .attr('x',function (node) {return node.x*coef*10;})
+                .attr('y',function(node){return node.y*coef;})
                 .attr('width',coef*10)
                 .attr('height',coef)
                 .style('fill',function(node){
                     return rgb(node.value);
                 });
+
+        //adding axis
+        console.log(height);
+
+        var ls=d3.scaleLinear().domain([1,0]).range([0,height*coef]);
+        var yAxis=d3.axisRight(ls);//.ticks(0.1);
+
+        bar_svg.append('g')
+                .attr('class','y axis')
+                .attr('transform','translate(40,5)')
+                .call(yAxis);
     });
 
+    //var ls=d3.scaleLinear().domain([0,100]).range([0, 100]);
+    //var axis = d3.axisRight(ls);
 
+    //d3.select("body").append("svg")
+    //        .attr("class", "axis")
+    //        .attr("width", 400)
+    //        .attr("height", 400)
+    //        .append("g")
+    //        .attr("transform", "translate(100,5)")
+    //        .call(axis);
 
 </script>
 
