@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+text {
+    font: 14px sans-serif;
+}
+
+
+</style>
+
+<body>
+<script src="d3.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3-dsv.v1.min.js" ></script>
+<script>
+
+    //========================================================
+    //We need to render the diffusion tensor image for a head.
+    //To learn the implementation of an image, I referred to:
+    //http://bl.ocks.org/e-/5244131
+    //
+    //The data type of each pixel is ratio. By observing the basic
+    //image that I tuned with. This image is of low frequency.
+    // Therefore It's better to use satuation-varying color to illustrate
+    // the information in the image based on:
+    //http://www.research.ibm.com/people/l/lloydt/color/color.HTM
+    //blue->yellow
+    //(0,0,0,) should be set to black otherwise, it will distract our eye.
+    //========================================================
+
+    //==========Reading tab separated data====================
+    var pixels=[];
+    var bar_data=[];
+    var height=0;
+    var width=0;
+    var row=[];
+    var coef=2;//the width and length factor of each pixel.
+
+    pmax=-1;
+    pmin=1;
+
+
+    hsl_start=[0,1,1];
+    hsl_end=[0,0,0];//h s l
+
+    //=========================================================
+    //hsl to rgb
+    //referred to https://en.wikipedia.org/wiki/HSL_and_HSV
+    //
+    //Input:
+    //  h: hue [0,1]
+    //  s: satuation [0,1]
+    //  l: luminance [0,1]
+    //==========================================================
+
+    function hsl2rgb(h,s,l){
+        //0.5,1,0.4
+        //c=0.8,x=0.8,value=0,0.8,0.8,m=0,rgb=0,0.8,0.8
+        //chroma:
+        c=(1-Math.abs(2*l-1))*s;
+
+        hp=h*6;
+
+        //intermediate value x
+        x=c*(1-Math.abs(hp%2-1));
+
+        //calculate R,G,B
+        if(hp>=0&&hp<1){
+            value=[c,x,0];
+        }else if(hp>=1&&hp<2){
+            value=[x,c,0];
+        }else if(hp>=2&&hp<3){
+            value=[0,c,x];
+        }else if(hp>=3&&hp<4){
+            value=[0,x,c];
+        }else if(hp>=4&&hp<5){
+            value=[x,0,c];
+        }else if(hp>=5&&hp<6){
+            value=[c,0,x];
+        }
+
+        //match luminance
+        m=l-0.5*c;
+
+        tmp=[value[0]+m,value[1]+m,value[2]+m];
+
+        //console.log('c='+c+',x='+x+',value='+value+',m='+m+',rgb='+tmp);
+        return tmp;
+    }
+
+    //hsl interpolate with ratio
+    function hsl_interpolate(from,to,ratio){
+        hsl_value=[0,0,0];
+
+        hsl_value[0]=ratio*from[0]+(1-ratio)*to[0];
+        hsl_value[1]=ratio*from[1]+(1-ratio)*to[1];
+        hsl_value[2]=ratio*from[2]+(1-ratio)*to[2];
+
+        return hsl_value;
+    }
+
+    //the rgb function
+    function rgb(array) {
+        //color joined by (233,123,123)
+        tmp= 'rgb('+array.map(function(color){return Math.round(255*color);}).join(',')+')';
+        //console.log(tmp);
+        return tmp;
+    }
+
+    //Asynchronized loading of data from data1
+    d3.text("data1.txt", function(error, text) {
+        if (error) throw error;
+
+        //parse the file
+        var psv=d3.dsvFormat("\n");
+        var data=psv.parse(text);   //data stored in rows
+
+        //read the height
+        console.log("The number of rows:"+data.length);
+        height=data.length;
+
+        //read the width
+        var ssv=d3.dsvFormat(" ");
+
+        for(i=0;i<data.length;i++){
+
+            //only one data pair inside this loop, the key:value "0 0 0 0 0":0 0 0 0 0
+            for(var key in data[i]){
+                rowRaw=data[i][key];
+                row=ssv.parse(rowRaw);//obtain the value in row
+            }
+
+            //update the width variable, it's not efficient
+            width=row.columns.length;
+
+            //operate on row to get the width and fillup the pixels
+            for(j=0;j<width;++j){
+
+                //calculate the rgb based on row.columns[j]
+                ratio=1-(+row.columns[j]);
+                //ratio=Math.sqrt(ratio);
+                //interpolate start and end to draw the image
+                //
+                hsl_value=hsl_interpolate(hsl_start,hsl_end,ratio);
+
+                //cutoff
+                if(ratio==1){
+                    rgb_value=[0,0,0];
+                }else{
+                    rgb_value=hsl2rgb(hsl_value[0],hsl_value[1],hsl_value[2]);
+                }
+
+                pixels.push({
+                    x:j,
+                    y:i,
+                    value:rgb_value//[+row.columns[j],+row.columns[j],+row.columns[j]]
+                });
+
+                //log max min
+                if(pmax<(+row.columns[j])){
+                    pmax=+row.columns[j];
+                }
+                if(pmin>(+row.columns[j])) {
+                    pmin = +row.columns[j];
+                }
+            }
+        }
+
+
+        //initialize bar data
+        for(j=0;j<height;++j){
+            //initialize bar data
+            ratio=j*1.0/(height-1);
+            //console.log(ratio);
+            //if(ratio==1){
+            //    hslv=[0,0,0];
+            //}else
+            hslv=hsl_interpolate(hsl_start,hsl_end,ratio);
+            if(ratio==1){
+                hslv=[0,0,0];
+            }
+
+            bar_data.push({
+                x:0,
+                y:j,
+                value:hsl2rgb(hslv[0],hslv[1],hslv[2])
+            });
+        }
+
+        //log the pixels
+        //render the canvas
+        //Add an svg in the body with the size of (w,h)
+        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef+15);
+                //margin = 30,
+                //width = width*coef,
+                //height = height*coef;
+
+        //set background to black
+        svg.append('rect').attr('width','100%').attr('height',height*coef+3*coef).attr('fill','black');
+
+        console.log('done');
+        //add an rgb figure into the svg file
+        rgb_node=svg.append('g').attr('class','nodes all');
+
+        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef+15);
+                //margin = 30,
+                //width = 10*coef,
+                //height = height*coef;
+
+        bar_node=bar_svg.append('g').
+        attr('class','nodes bar').attr('transform','translate('+(20)+',0)');
+
+        //fill the color
+        //rgb_node.selectAll('rect')
+        //        .data(pixels).enter().append('rect')
+        //        .attr('x',function (node) {return node.x*coef;})
+        //        .attr('y',function(node){return node.y*coef;})
+        //        .attr('width',coef)
+        //        .attr('height',coef)
+        //        .style('fill',function(node){
+        //            return rgb(node.value);
+        //        })
+        //        .attr('transform','translate(0,'+coef*3+')');
+
+        rgb_node.selectAll('circle')
+                .data(pixels).enter().append('circle')
+                .attr('cx',function (node) {return node.x*coef;})
+                .attr('cy',function(node){return node.y*coef;})
+                .attr('r',coef/2)
+                .style('fill',function(node){
+                    return rgb(node.value);
+                })
+                .attr('transform','translate(0,'+coef*3+')');
+        //add a contour bar
+        bar_node.selectAll('rect')
+                .data(bar_data).enter().append('rect')
+                .attr('x',function (node) {return node.x*coef*10;})
+                .attr('y',function(node){return node.y*coef;})
+                .attr('width',coef*10)
+                .attr('height',coef)
+                .style('fill',function(node){
+                    return rgb(node.value);
+                })
+                .attr('transform','translate(0,'+coef*3+')');
+
+        //adding axis
+        console.log(height);
+
+        var ls=d3.scaleLinear().domain([1,0]).range([0,height*coef]);
+        var yAxis=d3.axisRight(ls);//.ticks(0.1);
+
+        bar_svg.append('g')
+                .attr('class','y axis')
+                .attr('transform','translate(40,'+(3*coef)+')')
+                .call(yAxis);
+
+        //append a label as legend
+        bar_svg.append('text')
+                .attr('class','legend')
+                .attr('x',-270)
+                .attr('y',15)
+                .attr('transform','rotate(-90)')
+                .text('Fractional Anisotropy (FA)');
+    });
+
+    //var ls=d3.scaleLinear().domain([0,100]).range([0, 100]);
+    //var axis = d3.axisRight(ls);
+
+    //d3.select("body").append("svg")
+    //        .attr("class", "axis")
+    //        .attr("width", 400)
+    //        .attr("height", 400)
+    //        .append("g")
+    //        .attr("transform", "translate(100,5)")
+    //        .call(axis);
+
+</script>
+
+</body>
