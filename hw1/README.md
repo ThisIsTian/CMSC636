@@ -61,7 +61,7 @@ However, the background color would be occupied by `white`(`value=0` maps to `rg
 
 ##FA distribution
 
-To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function `_histfit_` to finish this task. **Figure 3(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
+To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function _`histfit`_ to finish this task. **Figure 3(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
 
 <img src="./matlab_1.png" height="300"> |  <img src="./d3_7.png" height="300">
 :-------------------------:|:-------------------------:
