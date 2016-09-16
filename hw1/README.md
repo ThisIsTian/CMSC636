@@ -24,18 +24,20 @@ To solve these problems, the design and implementation is arranged as bellow bas
 **Basic Design**. The interested areas (`value > 0`) are in high spatial frequencies from the `texture` perspective. So I encode the `FA value` using `Luminance`, which is suitable for visualizing image in high spatial frequency based on \[[3]\]. By utilizing `luminance`, we can differentiate structures from the background. Another observation is that the interesting areas are formed by connected values in stripes/lines while consecutive values are very similar. If we only use `luminance`, it's difficult to capture those variance within those lines. To capture this subtle difference within lines, we can utilize `saturation varying color`, which is very suitable for human eye to capture this subtle changes (low spatial frequency).
 
 ## High density area
-In this scenario, the interesting areas are high density areas, we need to differentiate them from background and low density areas. Based on the basic design, the basic encoding is to encode high FA value to high Luminance `H=(0,0,1)` while the low FA value to low Luminance `L=(0,0,0)`. To differentiate the subtle difference within lines, we add `saturation` components to `H` and `L` so that higher FA more catches human eyes. We achieve this as follows:
+In this scenario, the interesting areas are high density areas, we need to differentiate them from background and low density areas. Based on the basic design, the basic encoding is to encode high FA value to high Luminance `H=(0,0,1)` while the low FA value to low Luminance `L=(0,0,0)`. The result is illustrated in **Figure 1(a)**. To differentiate the subtle difference within lines, we increase the `saturation` component when FA increases so that higher FA are more apparent. We achieve this as follows:
  ```
  H'=H+(0,1,0)=(0,1,1)
  L'=L+(0,0,0)=(0,0,0)
  ```
 
-
 <img src="./d3_1.png" height="300">  |  <img src="./d3_2.png" height="300">
 :-------------------------:|:-------------------------:
-(a) Luminance             |  (b) Luminance + Saturation
-
+(a) Luminance (`d3_p0.html`)             |  (b) Luminance + saturation (`d3_p1.html`)
+<img src="./d3_3.png" height="300">  | 
+(a) Luminance + saturation + shape (`d3_p2.html`)             |
  **Figure 1. The visual design for characterizing high density areas**
+
+The result is shown in **Figure(b)**. However, there is still one problem, the **aliasing** of each pixel with `FA>0` is disturbing and incoherent to human eyes. To counter this problem, I encode the shape from the default `rectangle` to `circle`. The result is illustrated in **Figure(c)**.
 
 The visualization for _**P0**_ is implemented in `d3_p0.html`.
 ## Low density area

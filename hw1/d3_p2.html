@@ -50,8 +50,12 @@ text {
     pmin=1;
 
     //Figure 1(a)
-    var hsl_start=[0,0,0];
-    var hsl_end=[0,0,1];
+    //var hsl_start=[0,0,0];
+    //var hsl_end=[0,0,1];
+
+    //Figure 1(b)
+    hsl_start=[0,0,0];
+    hsl_end=[0,1,1];//h s l
 
     //=========================================================
     //hsl to rgb
@@ -199,6 +203,10 @@ text {
                 //margin = 30,
                 //width = width*coef,
                 //height = height*coef;
+
+        //set background to black
+        svg.append('rect').attr('width','100%').attr('height',height*coef+3*coef).attr('fill','black');
+
         console.log('done');
         //add an rgb figure into the svg file
         rgb_node=svg.append('g').attr('class','nodes all');
@@ -212,17 +220,26 @@ text {
         attr('class','nodes bar').attr('transform','translate('+(20)+',0)');
 
         //fill the color
-        rgb_node.selectAll('rect')
-                .data(pixels).enter().append('rect')
-                .attr('x',function (node) {return node.x*coef;})
-                .attr('y',function(node){return node.y*coef;})
-                .attr('width',coef)
-                .attr('height',coef)
+        //rgb_node.selectAll('rect')
+        //        .data(pixels).enter().append('rect')
+        //        .attr('x',function (node) {return node.x*coef;})
+        //        .attr('y',function(node){return node.y*coef;})
+        //        .attr('width',coef)
+        //        .attr('height',coef)
+        //        .style('fill',function(node){
+        //            return rgb(node.value);
+        //        })
+        //        .attr('transform','translate(0,'+coef*3+')');
+
+        rgb_node.selectAll('circle')
+                .data(pixels).enter().append('circle')
+                .attr('cx',function (node) {return node.x*coef;})
+                .attr('cy',function(node){return node.y*coef;})
+                .attr('r',coef/2)
                 .style('fill',function(node){
                     return rgb(node.value);
                 })
                 .attr('transform','translate(0,'+coef*3+')');
-
         //add a contour bar
         bar_node.selectAll('rect')
                 .data(bar_data).enter().append('rect')
