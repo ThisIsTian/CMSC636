@@ -33,9 +33,9 @@ In this scenario, the interesting areas are high density areas, we need to diffe
 <img src="./d3_1.png" height="300">  |  <img src="./d3_2.png" height="300">
 :-------------------------:|:-------------------------:
 (a) Luminance (`d3_p0.html`)             |  (b) Luminance + saturation (`d3_p1.html`)
-<img src="./d3_3.png" height="300">  | <img src="./d3_4.png" height="300">
-(c) Luminance + saturation + shape (`d3_p2.html`)             | (d) Low density areas (`d3_p4.html`)
- **Figure 1. The visual design for characterizing high density areas (a)-(c) and low density areas (d).**
+<img src="./d3_3.png" height="300">  | 
+(c) Luminance + saturation + shape (`d3_p2.html`)             | 
+ **Figure 1. The visual design for characterizing high density areas (a)-(c).**
 
 The result is shown in **Figure(b)**. However, there is still one problem, the **aliasing** of each pixel with `FA>0` is disturbing and incoherent to human eyes. To counter this problem, I encode the shape from the default `rectangle` to `circle`. The result is illustrated in **Figure(c)**. This result is more coherent. Even some small areas could be easily recognized without too much cognitive load.
 
@@ -46,10 +46,18 @@ For highlighting low density areas, the visualization process is similar but the
  H'=H+(0,0,0)=(0,0,0)
  L'=L+(0,1,0)=(0,1,1)
 ```
-However, by applying this，the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us to see the low density areas. So we specially map `value=0` to `rgb(0,0,0)`. Although this color is occupied by high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas very easy.
+<img src="./d3_4.png" height="300"> |  <img src="./d3_5.png" height="300">
+:-------------------------:|:-------------------------:
+(a) Low density areas (`d3_p3.html`)           |  (b) Low density areas (`d3_p4.html`)
+**Figure 2. Low density areas.**
+However, by applying this，the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us to see the low density areas. So we specially map `value=0` to `rgb(0,0,0)`. Although this color is occupied by high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas.
 
 #Visualization with Matlab
+**Basic design**.
 
+##Specific range
+
+##FA distribution
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
 [2]: http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"

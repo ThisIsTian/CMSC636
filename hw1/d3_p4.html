@@ -163,6 +163,7 @@ text {
                 pixels.push({
                     x:j,
                     y:i,
+                    rt:ratio,
                     value:rgb_value//[+row.columns[j],+row.columns[j],+row.columns[j]]
                 });
 
@@ -237,9 +238,9 @@ text {
                 .attr('cx',function (node) {return node.x*coef;})
                 .attr('cy',function(node){return node.y*coef;})
                 .attr('r',function(node){
-                    //if(node.rt==1)
-                    //    return 0;
-                    return coef/2;})
+                    if(node.rt==1)
+                        return 0;
+                    return (node.rt)*coef;})
                 .style('fill',function(node){
                     return rgb(node.value);
                 })
