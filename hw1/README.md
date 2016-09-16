@@ -26,14 +26,15 @@ To solve these problems, the design and implementation is arranged as bellow bas
 ## High density area
 In this scenario, the interesting areas are high density areas, we need to differentiate them from background and low density areas. Based on the basic design, the basic encoding is to encode high FA value to high Luminance `H=(0,0,1)` while the low FA value to low Luminance `L=(0,0,0)`. To differentiate the subtle difference within lines, we add `saturation` components to `H` and `L` so that higher FA more catches human eyes. We achieve this as follows:
  ```
- H'=H+(0.2,1,0)=(0.2,1,1)
+ H'=H+(0,1,0)=(0,1,1)
  L'=L+(0,0,0)=(0,0,0)
  ```
 
-Solarized dark             |  Solarized Ocean
 :-------------------------:|:-------------------------:
 <img src="./d3_1.png" height="300">  |  <img src="./d3_2.png" height="300">
- 
+(a) Luminance             |  (b) Luminance + Saturation
+
+ **Figure 1. The visual design for characterizing high density areas**
 
 The visualization for _**P0**_ is implemented in `d3_p0.html`.
 ## Low density area
