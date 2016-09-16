@@ -1,6 +1,6 @@
 #Introduction
 
-In this project, I try to use two tools (D3 and Matlab) to visualize one diffusion tensor imaging of a brain in a way that it can better characterize micro-structural changes. The image is stored in `data1.txt` as a space separated matrix, where each value in the matrix represents a FA (fractional anisotropy ) value (`Data Type: ratio`) in the range of [0,1]. According to [the definition of FA on Wikipedia][1], the higher the value, the higher the fiber density, axonal diameter, or myelination in white matter. An example view of this image _provided by the course_ is shown below:
+In this project, I try to use two tools (D3 and Matlab) to visualize one diffusion tensor imaging of a brain in a way that it can better characterize different micro-structural changes. The image is stored in `data1.txt` as a space separated matrix, where each value in the matrix represents a FA (fractional anisotropy ) value (`Data Type: ratio`) in the range of [0,1]. According to [the definition of FA on Wikipedia][1], the higher the value, the higher the fiber density, axonal diameter, or myelination in white matter. An example view of this image _provided by the course_ is shown below:
 
 [<img src="https://2a15ca77-a-7363f245-s-sites.googlegroups.com/a/umbc.edu/datavisualization/resources/output1.png?attachauth=ANoY7cpeAsPJ2i_oqVZ1U94lRXKZ8LBoQ_DeTfJXo-0I6wNCtx0s92N1tpI11YHb8a5VKMhaThXLH7MQaZ7tEd8XYLW0hU9vI12f-w3Offx9xTpGMIY6SehQwq38R7dH03zSLUzUV4tS0dQTITB-lLDJ2--8aRYru4TuFvNYWdTXD8BWGN_PCNCWkF7YG6SKTLpIi8C2lyiKtHpvawRwCDIU4mHDJ7sp4-J1I1ZzP5XlO75TWqT53Wk%3D&attredirects=0">]()
 
@@ -16,15 +16,15 @@ In order to have all the important information characterized. It is not enough t
 3. **P3: FA distribution might be more interesting**. One research has pointed out that [FA distribution might serve as additional measures to help monitor desease progression for patients][2]. I believe there is a need to visualize the distribution of FA.
 
 To solve these problems, the design and implementation is arranged as bellow based on the course requirement that two tools should have two visualization:
- * _**P0**_ and _**P1**_ are implemented by **D3**. In this visualization task, I explore to encode FA as `luminance`,`saturation`,`shape`, and `radius of circle` to implement the task _**P0**_ and _**P1**_.
+ * _**P0**_ and _**P1**_ are implemented by **D3**. In this visualization task, I explore to encode FA as `luminance`, `saturation`, `shape`, and `radius of circle` to implement the task _**P0**_ and _**P1**_.
  * _**P2**_ and _**P3**_ are implemented by **Matlab**.
 
 #Visualization with D3
 
-**Basic Design**. The interested areas (`value > 0`) are in high spatial frequencies from the `texture` perspective. So I encode the `FA value` using `Luminance`, which is suitable for visualizing image in high spatial frequency based on \[[3]\]. By utilizing `luminance`, we can differentiate structures from the background. Another observation is that the interesting areas are formed by connected values in stripes/lines while consecutive values are very similar. If we only use `luminance`, it's difficult to capture those variance within those lines. To capture this subtle difference within lines, we can utilize `saturation varying color`, which is very suitable for human eye to capture this subtle changes (low spatial frequency).
+**Basic Design**. No matter which area, the interested parts (`value > 0`) are in high spatial frequencies from the `texture` perspective. So I encode the `FA value` using `Luminance`, which is suitable for visualizing image in high spatial frequency based on \[[3]\]. By utilizing `luminance`, we can differentiate structures from the background. Another observation is that the interesting areas are formed by connected values in stripes/lines while consecutive values are very similar. If we only use `luminance`, it's difficult to capture those variance within those lines. To capture this subtle difference within lines, we can utilize `saturation varying color`, which is very suitable for human eye to capture this subtle changes (low spatial frequency).
 
 ## High density area
-In this scenario, the interesting areas are high density areas, we need to differentiate them from background and low density areas. Based on the basic design, the basic encoding is to encode high FA value to high Luminance `H=(0,0,1)` while the low FA value to low Luminance `L=(0,0,0)`. The result is illustrated in **Figure 1(a)**. To differentiate the subtle difference within lines, we increase the `saturation` component when FA increases so that higher FA are more apparent. We achieve this as follows:
+In this scenario, the interesting areas are high density areas, we need to differentiate them from background and low density areas. Based on the basic design, the basic encoding is to encode high FA value to high Luminance `H=hsl(0,0,1)` while the low FA value to low Luminance `L=hsl(0,0,0)`. The result is illustrated in **Figure 1(a)**. To differentiate the subtle difference within lines, we increase the `saturation` component when FA increases so that higher FA are more apparent. We achieve this as follows:
  ```
  H'=H+(0,1,0)=(0,1,1)
  L'=L+(0,0,0)=(0,0,0)
@@ -43,8 +43,8 @@ The result is shown in **Figure(b)**. However, there is still one problem, the *
 
 For highlighting low density areas, the visualization process is similar but the color is reversed as below.
 ```
- H'=H+(0,0,0)=(0,0,0)
- L'=L+(0,1,0)=(0,1,1)
+ H'=H+hsl(0,0,0)=hsl(0,0,0)
+ L'=L+hsl(0,1,0)=hsl(0,1,1)
 ```
 <img src="./d3_4.png" height="300"> |  <img src="./d3_5.png" height="300">
 :-------------------------:|:-------------------------:
@@ -54,11 +54,20 @@ For highlighting low density areas, the visualization process is similar but the
 However, the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us from seeing the low density areas. So I specially mapped `value=0` to `rgb(0,0,0)`. Although this color is original mapped high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas. However, the dark red color still draws our attention. To let the low density area draw more of our attention, I encode `FA value` to another dimension, `the radius of the circle`. The result is in **Figure 2(b)**. It shows when the density is lower the radius is larger. The low density area can apparently draw more attention.
 
 #Visualization with Matlab
-**Basic design**.
 
 ##Specific range
 
+
+
 ##FA distribution
+
+To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function `_histfit_` to finish this task. **Figure 3(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
+
+<img src="./matlab_1.png" height="300"> |  <img src="./d3_7.png" height="300">
+:-------------------------:|:-------------------------:
+(a) FA distribution by `histfit` (`matlab_1.m`)           |  (b) Improved Visualization (`matlab_2.m`)
+
+#Conclusion
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
 [2]: http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"
