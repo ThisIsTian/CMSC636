@@ -63,10 +63,11 @@ However, the background color would be occupied by `white`(`value=0` maps to `rg
 
 To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function _`histfit`_ to finish this task. **Figure 3(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
 
-<img src="./matlab_1.png" height="300"> |  <img src="./d3_7.png" height="300">
+<img src="./matlab_1.png" height="300"> |  <img src="./matlab_2.png" height="300">
 :-------------------------:|:-------------------------:
-(a) FA distribution by `histfit` (`matlab_1.m`)           |  (b) Improved Visualization (`matlab_2.m`)
+(a) FA distribution by `histfit` (`matlab_1.m`)           |  (b) Improved Visualization by fading bins (`matlab_2.m`)
 
+Since the purpose of this task is to show the distribution instead of the bins. I fade the face and line `transperency` of the bins to `0.05` to make the fitted distribution stand out while still preserving the view of original data. The improved result is illustrated in **Figure 3(b)**. The distribution is much more clear and we can still have a glimpse of the original data.
 #Conclusion
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
