@@ -12,6 +12,11 @@
   text-anchor: middle;
 }
 
+text {
+    font: 14px sans-serif;
+}
+
+
 </style>
 
 <body>
@@ -192,7 +197,7 @@
         //log the pixels
         //render the canvas
         //Add an svg in the body with the size of (w,h)
-        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef);
+        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef+15);
                 //margin = 30,
                 //width = width*coef,
                 //height = height*coef;
@@ -200,7 +205,7 @@
         //add an rgb figure into the svg file
         rgb_node=svg.append('g').attr('class','nodes all');
 
-        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef);
+        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef+15);
                 //margin = 30,
                 //width = 10*coef,
                 //height = height*coef;
@@ -217,7 +222,8 @@
                 .attr('height',coef)
                 .style('fill',function(node){
                     return rgb(node.value);
-                });
+                })
+                .attr('transform','translate(0,'+coef*3+')');
 
         //add a contour bar
         bar_node.selectAll('rect')
@@ -228,7 +234,8 @@
                 .attr('height',coef)
                 .style('fill',function(node){
                     return rgb(node.value);
-                });
+                })
+                .attr('transform','translate(0,'+coef*3+')');
 
         //adding axis
         console.log(height);
@@ -238,8 +245,16 @@
 
         bar_svg.append('g')
                 .attr('class','y axis')
-                .attr('transform','translate(40,5)')
+                .attr('transform','translate(40,'+(3*coef)+')')
                 .call(yAxis);
+
+        //append a label as legend
+        bar_svg.append('text')
+                .attr('class','legend')
+                .attr('x',-270)
+                .attr('y',15)
+                .attr('transform','rotate(-90)')
+                .text('Fractional Anisotropy (FA)');
     });
 
     //var ls=d3.scaleLinear().domain([0,100]).range([0, 100]);
