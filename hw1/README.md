@@ -48,9 +48,10 @@ For highlighting low density areas, the visualization process is similar but the
 ```
 <img src="./d3_4.png" height="300"> |  <img src="./d3_5.png" height="300">
 :-------------------------:|:-------------------------:
-(a) Low density areas (`d3_p3.html`)           |  (b) Low density areas (`d3_p4.html`)
+(a) Low density areas (`d3_p3.html`)           |  (b) Low density areas + Circle radius (`d3_p4.html`)
 **Figure 2. Low density areas.**
-However, by applying this，the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us to see the low density areas. So we specially map `value=0` to `rgb(0,0,0)`. Although this color is occupied by high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas.
+
+However, the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us from seeing the low density areas. So I specially mapped `value=0` to `rgb(0,0,0)`. Although this color is original mapped high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas. However, the dark red color still draws our attention. To let the low density area draw more of our attention, I encode `FA value` to another dimension, `the radius of the circle`. The result is in **Figure 2(b)**. It shows when the density is lower the radius is larger. The low density area can apparently draw more attention.
 
 #Visualization with Matlab
 **Basic design**.
