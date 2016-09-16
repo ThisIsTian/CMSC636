@@ -10,7 +10,7 @@ mp=reshape(m,1,[]);
 mp=mp(mp~=0);
 
 %set figure size
-figure('position',[100,100,900,500]);
+figure('position',[100,100,900,900]);
 
 %fit a histogram
 h=histfit(mp,50,'kernel');
