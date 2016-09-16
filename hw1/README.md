@@ -16,7 +16,7 @@ In order to have all the important information characterized. It is not enough t
 3. **P3: FA distribution might be more interesting**. One research has pointed out that [FA distribution might serve as additional measures to help monitor desease progression for patients][2]. I believe there is a need to visualize the distribution of FA.
 
 To solve these problems, the design and implementation is arranged as bellow based on the course requirement that two tools should have two visualization:
- * _**P0**_ and _**P1**_ are implemented by **D3**. 
+ * _**P0**_ and _**P1**_ are implemented by **D3**. In this visualization task, I explore to encode FA as `luminance`,`saturation`,`shape`, and `radius of circle` to implement the task _**P0**_ and _**P1**_.
  * _**P2**_ and _**P3**_ are implemented by **Matlab**.
 
 #Visualization with D3
