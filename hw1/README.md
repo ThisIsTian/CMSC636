@@ -30,7 +30,10 @@ In this scenario, the interesting areas are high density areas, we need to diffe
  L'=L+(0,0,0)=(0,0,0)
  ```
 
-<img src="./d3_1.png" width="48">
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+<img src="./d3_1.png" height="300">  |  <img src="./d3_2.png" height="300">
+ 
 
 The visualization for _**P0**_ is implemented in `d3_p0.html`.
 ## Low density area
