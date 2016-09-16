@@ -30,8 +30,9 @@ In this scenario, the interesting areas are high density areas, we need to diffe
  L'=L+(0,0,0)=(0,0,0)
  ```
 
-:-------------------------:|:-------------------------:
+
 <img src="./d3_1.png" height="300">  |  <img src="./d3_2.png" height="300">
+:-------------------------:|:-------------------------:
 (a) Luminance             |  (b) Luminance + Saturation
 
  **Figure 1. The visual design for characterizing high density areas**
