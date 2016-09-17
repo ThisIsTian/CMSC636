@@ -63,6 +63,7 @@ Since our purpose of this task is to characterize a specific range, such as to f
   3) From 0.5 to 1: the radius decreases.
   ```
 The result is
+
 <img src="./matlab_range1.png" height="300"> |  <img src="./matlab_2.png" height="300">
 :-------------------------:|:-------------------------:
 (a) Range `[0.3,0.5]` (`matlab_range.m`)           |  (b) Improved Visualization by fading bins (`matlab_2.m`)
