@@ -56,8 +56,13 @@ However, the background color would be occupied by `white`(`value=0` maps to `rg
 #Visualization with Matlab
 
 ##Specific range
-
-
+Since our purpose of this task is to characterize a specific range, such as to filter out the range `[0.3,0.5]`, we should make other areas less eye catching. To achieve this, I first try to use `circle radius` to represent the importance of the range. The mapping is as below:
+  ```
+  1) 0.3~0.5: the radius is set to largest.
+  2) From 0.3 to 0: the radius decreases.
+  3) From 0.5 to 1: the radius decreases.
+  ```
+The result is
 
 ##FA distribution
 
@@ -66,8 +71,11 @@ To show the FA distribution of a brain, the straightforward method is to use a h
 <img src="./matlab_1.png" height="300"> |  <img src="./matlab_2.png" height="300">
 :-------------------------:|:-------------------------:
 (a) FA distribution by `histfit` (`matlab_1.m`)           |  (b) Improved Visualization by fading bins (`matlab_2.m`)
+**Figure 3. The visualization design process for FA distribution.** The distribution is more visible after applying `transperency` to bins.
+
 
 Since the purpose of this task is to show the distribution instead of the bins. I fade the face and line `transperency` of the bins to `0.05` to make the fitted distribution stand out while still preserving the view of original data. The improved result is illustrated in **Figure 3(b)**. The distribution is much more clear and we can still have a glimpse of the original data.
+
 #Conclusion
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
