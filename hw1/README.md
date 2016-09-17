@@ -90,7 +90,7 @@ Since the purpose of this task is to show the distribution instead of the bins. 
 
 #Conclusion
 
-In this homework, I use two tools (D3 and Matlab) to explore different design options and parameters, including `Color`, `Shape`, and `Size`. Among the figures I generated. 
+In this homework, I use two tools (D3 and Matlab) to explore different design options and parameters, including `Color`, `Shape`, and `Size`. Among the figures I generated, I like **Figure 3(b)** the most because I like the color and it can very vividely show the specific range.
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
 [2]: http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"
