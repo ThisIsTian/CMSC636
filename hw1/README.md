@@ -71,7 +71,7 @@ The result is is illustrated in **Figure 3(a)**. As you can see, the low and hig
 
 <img src="./matlab_range1.png" height="300"> |  <img src="./matlab_range2.png" height="300">
 :-------------------------:|:-------------------------:
-(a) Range `[0.3,0.5]` (`matlab_range.m`)           |  (b) Range + Color remapping (`matlab_2.m`)
+(a) Range `[0.3,0.5]` (`matlab_range.m`)           |  (b) Range + Color remapping (`matlab_range1.m`)
 **Figure 3. The visualization design process for Specific Range**.
 
 **Figure 3(b)** shows the final result. The interested area is very easily to be distinguished from the other areas. Moreover, the small variation within the range is still very vivid.
