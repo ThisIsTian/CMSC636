@@ -59,28 +59,38 @@ However, the background color would be occupied by `white`(`value=0` maps to `rg
 Since our purpose of this task is to characterize a specific range, such as to filter out the range `[0.3,0.5]`, we should make other areas less eye catching. To achieve this, I first try to use `circle radius` to represent the importance of the range. The mapping is as below:
   ```
   1) 0.3~0.5: the radius is set to largest.
-  2) From 0.3 to 0: the radius decreases.
+  2) From 0.3 to 0: the radius decreases. 
   3) From 0.5 to 1: the radius decreases.
   ```
-The result is
+The result is is illustrated in **Figure 3(a)**. As you can see, the low and high density areas are still not filtered out,which means just adjusting the shape based on the original technique is not enough. To counter the problem while preserving the low and high FA value trend within the specific range. The color mapping should be changed so that only colors in the specific range can draw our attention. To achieve this goal. The mapping of color is as follows:
+```
+  1. 0.3~0.5: Varying colormap is used, 0.3->0.5 equals to green->red. This captures the low spatial frequencies.
+  2. From 0.3 to 0: 0.3->0.0 equals to r^5*green+(1-r^5)*grey. So the color quickly fades but can still be distinguished from the background.
+  3. From 0.5 to 1: 0.5->1.0 equals to r^10*red+(1-r^10)grey. So the color quickly fades too and can still be distinguished from the backgroun. The reason why the exponential component is higher is that if the component is the same, the importance will not decrease at the same ratio. Increasing this component would allow them to decrease nearly the same. 
+```
 
-<img src="./matlab_range1.png" height="300"> |  <img src="./matlab_2.png" height="300">
+<img src="./matlab_range1.png" height="300"> |  <img src="./matlab_range2.png" height="300">
 :-------------------------:|:-------------------------:
-(a) Range `[0.3,0.5]` (`matlab_range.m`)           |  (b) Improved Visualization by fading bins (`matlab_2.m`)
+(a) Range `[0.3,0.5]` (`matlab_range.m`)           |  (b) Range + Color remapping (`matlab_2.m`)
+**Figure 3. The visualization design process for Specific Range**.
+
+**Figure 3(b)** shows the final result. The interested area is very easily to be distinguished from the other areas. Moreover, the small variation within the range is still very vivid.
 
 ##FA distribution
 
-To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function _`histfit`_ to finish this task. **Figure 3(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
+To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function _`histfit`_ to finish this task. **Figure 4(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
 
 <img src="./matlab_1.png" height="300"> |  <img src="./matlab_2.png" height="300">
 :-------------------------:|:-------------------------:
 (a) FA distribution by `histfit` (`matlab_1.m`)           |  (b) Improved Visualization by fading bins (`matlab_2.m`)
-**Figure 3. The visualization design process for FA distribution.** The distribution is more visible after applying `transperency` to bins.
+**Figure 4. The visualization design process for FA distribution.** The distribution is more visible after applying `transperency` to bins.
 
 
-Since the purpose of this task is to show the distribution instead of the bins. I fade the face and line `transperency` of the bins to `0.05` to make the fitted distribution stand out while still preserving the view of original data. The improved result is illustrated in **Figure 3(b)**. The distribution is much more clear and we can still have a glimpse of the original data.
+Since the purpose of this task is to show the distribution instead of the bins. I fade the face and line `transperency` of the bins to `0.05` to make the fitted distribution stand out while still preserving the view of original data. The improved result is illustrated in **Figure 4(b)**. The distribution is much more clear and we can still have a glimpse of the original data.
 
 #Conclusion
+
+In this homework, I use two tools (D3 and Matlab) to explore different design options and parameters, including `Color`, `Shape`, and `Size`. Among the figures I generated. 
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
 [2]: http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"

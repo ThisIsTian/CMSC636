@@ -16,23 +16,24 @@ fig=figure('position',[0,0,600,400]);
 whitebg(fig,'k');
 
 %1, map FA value to different size.
-
+s=0.3;
+e=0.5;
 
 for i=1:length(mp)
-    %0.3~0.5: the radius is set to largest.
-    if mp(i)>0.3 && mp(i)<=0.5
+    %s~e: the radius is set to largest.
+    if mp(i)>s && mp(i)<=e
         mp(i)=1;
         continue;
     end
-    %From 0.3 to 0: the radius decreases
-    if mp(i)<=0.3
-        mp(i)= (mp(i)/0.3);%[0,1]
+    %From s to 0: the radius decreases
+    if mp(i)<=s
+        mp(i)= (mp(i)/s);%[0,1]
         continue;
     end
     
-    %From 0.5 to 1: the radius decreases.
-    if mp(i)>0.5
-        mp(i)=(1-mp(i))/0.5;
+    %From e to 1: the radius decreases.
+    if mp(i)>e
+        mp(i)=(1-mp(i))/e;
         continue;
     end
 end
@@ -42,8 +43,27 @@ hsl_start=[0,0,0];
 hsl_end=[0,1,1];
 map=[];
 for i=0:0.01:1
-    hsl_v=(1-i)*hsl_start+i*hsl_end;
-    color=hsl2rgb(hsl_v);
+    
+    %s to e
+    if i>s&&i<=e
+        color=(1-(i-s)/(e-s))*[0 1 0]+(i-s)/(e-s)*[1 0 0];
+    end
+    
+    %0 to s
+    if i<=s
+        ratio=i/s;
+        ratio=ratio^5;
+        color=ratio*[0 1 0]+(1-ratio)*[0.5 0.5 0.5];
+    end
+    
+    %e to 1
+    if i>e
+        ratio=(1-i)/(1-e);
+        ratio=ratio^10;
+        %ratio=ratio*ratio;
+        color=ratio*[1 0 0]+(1-ratio)*[0.5 0.5 0.5];
+    end
+    
     map=cat(1,map,color);
 end
 
@@ -58,8 +78,8 @@ for i=1:length(mp)
        c=[xp(i) yp(i)];%center
        r=mp(i);%radius
        pos=[c-r 2*r 2*r];%po
-       hsl_v=(1-mo(i))*hsl_start+mo(i)*hsl_end;
-       color=hsl2rgb(hsl_v);
+       %hsl_v=(1-mo(i))*hsl_start+mo(i)*hsl_end;
+       color=map(int32(mo(i)*100),:);
        h=rectangle('Position',pos,...
        'Curvature',1,...
        'Facecolor',color,...
