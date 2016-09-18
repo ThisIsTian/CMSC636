@@ -28,14 +28,6 @@ text {
     //We need to render the diffusion tensor image for a head.
     //To learn the implementation of an image, I referred to:
     //http://bl.ocks.org/e-/5244131
-    //
-    //The data type of each pixel is ratio. By observing the basic
-    //image that I tuned with. This image is of low frequency.
-    // Therefore It's better to use satuation-varying color to illustrate
-    // the information in the image based on:
-    //http://www.research.ibm.com/people/l/lloydt/color/color.HTM
-    //blue->yellow
-    //(0,0,0,) should be set to black otherwise, it will distract our eye.
     //========================================================
 
     //==========Reading tab separated data====================
@@ -199,19 +191,19 @@ text {
         //log the pixels
         //render the canvas
         //Add an svg in the body with the size of (w,h)
-        var svg = d3.select('body').append('svg').attr('width',width*coef).attr('height',height*coef+15);
+        var svg = d3.select('body').append('svg').attr('width',width*coef+30).attr('height',height*coef+30);
                 //margin = 30,
                 //width = width*coef,
                 //height = height*coef;
 
-        //set background to black
-        svg.append('rect').attr('width','100%').attr('height',height*coef+3*coef).attr('fill','black');
 
         console.log('done');
         //add an rgb figure into the svg file
-        rgb_node=svg.append('g').attr('class','nodes all');
+        rgb_node=svg.append('g').attr('class','nodes all').attr('transform','translate(30,0)');
+        //set background to black
+        rgb_node.append('rect').attr('width','100%').attr('height',height*coef+3*coef).attr('fill','black');
 
-        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef+15);
+        bar_svg=d3.select('body').append('svg').attr('width',40*coef).attr('height',height*coef+15).attr('height',height*coef+30);
                 //margin = 30,
                 //width = 10*coef,
                 //height = height*coef;
@@ -270,6 +262,25 @@ text {
                 .attr('y',15)
                 .attr('transform','rotate(-90)')
                 .text('Fractional Anisotropy (FA)');
+
+        //append a scale to the image
+        var lsx=d3.scaleLinear().domain([0, width-1]).range([0,(width-1)*coef]);
+        var xAxis=d3.axisBottom(lsx);
+
+        var hsx=d3.scaleLinear().domain([0,height-1]).range([(height-1)*coef,0]);
+        var yAxis=d3.axisLeft(hsx);
+
+        rgb_node.append('g')
+                .attr('class','x axis')
+                .attr('transform','translate(0,'+((height+1)*coef)+')')
+                .call(xAxis);
+
+        rgb_node.append('g')
+                .attr('class','y axis')
+                .attr('transform','translate(0,0)')
+                .call(yAxis)
+                .attr('transform','translate(0,'+coef*3+')');
+
     });
 
     //var ls=d3.scaleLinear().domain([0,100]).range([0, 100]);
