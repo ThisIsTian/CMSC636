@@ -92,7 +92,15 @@ Since the purpose of this task is to show the distribution instead of the bins. 
 
 In this homework, I use two tools (D3 and Matlab) to explore different design options and parameters, including `Color`, `Shape`, and `Size`. Among the figures I generated, I like **Figure 3(b)** the most because I like the color and it can very vividely show the specific range.
 
-Between the two tools, the hand-on experience told me that I like Matlab more than d3 because the low level implementation such as the legend and scale has already been implemented. And it also provides good functionality such as fitting a distribution. The only drawback is that the code can't be rendered on webpage while d3 provides the capability.
+The best features for matlab is i) it provides a lot of functionality which don't require me to program in details (such as `_histfit_`), ii) it provides mannual operation of the figure through UI. The drawback of matlab is that I can't render it to a webpage and it takes a huge installation space on my disk. 
+
+The best features for D3 is i) it's very lightweight and ii) can be rendered to webpage very easy. The drawback in this homework is that the webpage can't directly read `data1.txt` locally. I need to publish to a server that provide Http service, like Tomcat or use WebStorm to load the data.
+
+#Citation
+\[1\], https://en.wikipedia.org/wiki/Fractional_anisotropy,  "Fractional Anisotropy on Wikipedia"
+\[2\], http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf, "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"
+\[3\], http://www.research.ibm.com/people/l/lloydt/color/color.HTM, "Why Should Engineers and Scientists Be Worried About Color?"
+
 
 [1]: https://en.wikipedia.org/wiki/Fractional_anisotropy  "Fractional Anisotropy on Wikipedia"
 [2]: http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"
