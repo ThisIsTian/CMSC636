@@ -191,15 +191,15 @@ text {
         //log the pixels
         //render the canvas
         //Add an svg in the body with the size of (w,h)
-        var svg = d3.select('body').append('svg').attr('width',width*coef+30).attr('height',height*coef+30);
+        var svg = d3.select('body').append('svg').attr('width',width*coef+30+20).attr('height',height*coef+30+30);
                 //margin = 30,
                 //width = width*coef,
                 //height = height*coef;
         console.log('done');
         //add an rgb figure into the svg file
-        rgb_node=svg.append('g').attr('class','nodes all').attr('transform','translate(30,0)');
+        rgb_node=svg.append('g').attr('class','nodes all').attr('transform','translate(50,0)');
 
-        bar_svg=d3.select('body').append('svg').attr('width',40*coef+30).attr('height',height*coef+30);
+        bar_svg=d3.select('body').append('svg').attr('width',40*coef+30).attr('height',height*coef+30+30);
                 //margin = 30,
                 //width = 10*coef,
                 //height = height*coef;
@@ -267,6 +267,19 @@ text {
                 .attr('transform','translate(0,0)')
                 .call(yAxis)
                 .attr('transform','translate(0,'+coef*3+')');
+
+        //add text
+        rgb_node.append('text')
+                .attr('class','xlabel')
+                .attr('x',width*coef/2-25)
+                .attr('y',height*coef+35)
+                .text('Width');
+        rgb_node.append('text')
+                .attr('class','ylabel')
+                .attr('x',-height*coef/2-20)
+                .attr('y',-35)
+                .attr('transform','rotate(-90)')
+                .text('Height');
 
     });
 
