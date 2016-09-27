@@ -12,13 +12,13 @@ I find both the effective visualization and ineffective visualization from this 
 #The ineffective figure
 
 
-<img src="./ineffective.png" height="300"> 
+<img src="./ineffective.png" height="400"> 
 
 **Figure 1. Stacked graph of unemployed U.S. workers by industry, 2000–2010(The ineffective image** from \[[1][1]\]).
 
 The effectiveness is less than 13%. Because this figure can only convey the overal trend of unemployed U.S. workers while it is difficult for human eyes to distinguish the max,min overall or during a specific time. It's better to lower half be a straight line rather than changing lines to represent data.
 
-The most noticeable elements of this visualization is 1) the overall changing bandwidth, 2) the color of each sub-band and 3) the bandwidth of each subband. And they are the most important.Although all elements carry information information, the information to show the max, min or local trend is missing. For example, the min unemployed U.S. workers are nearly impossible to be identified with the corrent coloring method. It's not effective. Moreover, this color visualization encourages a misperception of the min unemployed U.S. works from `Mining and Extraction` to `Agriculture` or `Information`.
+The most noticeable elements of this visualization are 1) the overall changing bandwidth, 2) the color of each sub-band and 3) the bandwidth of each subband. And they are the most important.Although all elements carry information information, the information to show the max, min or local trend is missing. For example, the min unemployed U.S. workers are nearly impossible to be identified with the corrent coloring method. It's not effective. Moreover, this color visualization encourages a misperception of the min unemployed U.S. works from `Mining and Extraction` to `Agriculture` or `Information`.
 
 In order to make the presentation more effective, my suggestions are as below: 
 
