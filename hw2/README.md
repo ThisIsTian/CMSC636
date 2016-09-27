@@ -30,19 +30,17 @@ In order to make the presentation more effective, my suggestions are as below:
 
 #The effective visualization
 
-<img src="./effective.png" height="300"> 
+<img src="./effective.png" height="400"> 
 
 **Figure 2. Cartesian node-link diagram of the Flare package hierarchy\[[1][1]\].**
 
 This visualization is very effective from the perspective of showing the hierarchy. Because it first shows the nodes in each layer in a very compact circle area. We can easily figure out the relative depth of each node. Moreover, the number of children is well represented by the angle of connected lines from their parents. We could easily figure out the direct child of flare that contains most number of children is `query`.
 
-The most noticeable elements of this visualization are 1) the node circle, 2) the angle formed by connections from parents to children, 3) the number of connections, and 4) the relative distance to the center of the circle.
-
-With all the previous noticeable elements, no essential information is missing. And they carry the very amount of information. However, color could be used more effecient. We can add a coloring method to make the inner layer more standout so that their layer in the hierarchy could be more clear. Then, there will not be any misperception.
+The most noticeable elements of this visualization are 1) the circle formed by nodes in different layers, 2) the angle formed by connections from parents to children, 3) the number of connections between parents and children, and 4) the relative distance to the center of the circle for each node. With all the previous noticeable elements, no essential information is missing. They carry the very amount of information. However, color could be used more efficient. We can add a coloring method to make the inner layer more outstanding so that their layer in the hierarchy is more clear. For example, from layer 1, 2, to 3, the color of each node in each layer could be rendered as green, yellow, and blue. Then, there will be no possible misperception.
 
 In order to improve the visualization, my only suggestion is:
 
-1. For each layer of nodes, use a difference color instead of using just one color for the internal nodes.
+1. For each layer of nodes, use a difference color instead of using just one color for the internal nodes and red for the leave nodes.
 
 #Citation
 
