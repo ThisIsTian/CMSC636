@@ -9,7 +9,7 @@
     3. Assign special colors to bundles that are the goal of the task.
 * Group sketch: The group sketch according to the idea is shown in Figure 1. 
 
-<img src="./ineffective.png" height="400">
+<img src="./sketch.png" height="400">
 
 **Figure 1. The group sketch based on our group idea**
 
