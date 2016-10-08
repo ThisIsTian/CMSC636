@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+</body>
+
+<script src="d3.min.js"></script>
+<script src="underscore.js"></script>
+
+
+<script>
+    //=========================================================================
+    //1, based on the input to calculate the values for a box-and-whisker plot
+    //2, render a box-and-whisker plot based on the input
+    //3, render decisions the color and line width, how to decide
+    //=========================================================================
+
+    //this is the test data for rendering the plot
+    data=[0,1,2,3,4,3,8,9,8,15,13,90];
+    //======Calculate the boxplot parameters======
+    //Calculate the values required for a box-and-whisker plot
+    //
+    //Args: the data array
+    //
+    //Return:
+    //    mean,p05,p25,p75,p95
+    //============
+    function calBoxPlotParam(data){
+
+        return [
+                d3.quantile(data,0.05),
+                d3.quantile(data,0.25),
+                d3.quantile(data,0.5),
+                d3.quantile(data,0.75),
+                d3.quantile(data,0.95)];
+    }
+
+    function genPlot(data,container,lefttopX,lefttopY,boxwidth,plotHeight){
+        data.sort(d3.ascending);
+        bparam=calBoxPlotParam(data);
+
+        //plotHeight=200;
+        linewidth=2;
+        //lefttopX=2;
+        //lefttopY=2;
+        //boxwidth=25;
+
+        var curScale=d3.scale.linear().domain([d3.min(bparam),d3.max(bparam)]).range([1,plotHeight]);
+
+
+        height25s=[plotHeight-curScale(bparam[3]),//95->75
+            plotHeight-curScale(bparam[2]),//75->50
+            plotHeight-curScale(bparam[1]),//50->25
+            plotHeight-curScale(bparam[0])];//25->5
+
+
+        width=boxwidth+2*d3.max([lefttopX,linewidth]);
+        height=plotHeight+2*linewidth+lefttopY;
+        lineColor="black";
+        dashType="3,3"
+
+
+        //the right side position of the box
+        righttopX=boxwidth+lefttopX;
+        righttopY=lefttopY;
+
+
+        var bplot1=container.append("g").attr("width",width).attr("height",height);
+        //draw 95% line
+        var line95=bplot1.append("g");
+
+        console.log(d3.min([lefttopX+boxwidth,boxwidth-lefttopX]));
+
+        line95.append("line")
+                .attr("x1",lefttopX)
+                .attr("y1",lefttopY)
+                .attr("x2",righttopX)
+                .attr("y2",righttopY)
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor);
+
+        //draw vertical lines
+        var vline75295=bplot1.append("g");
+        vline75295.append("line")
+                .attr("x1",(lefttopX+righttopX)/2)
+                .attr("y1",lefttopY)
+                .attr("x2",(lefttopX+righttopX)/2)
+                .attr("y2",lefttopY+height25s[0])
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor)
+                .attr("stroke-dasharray",dashType);
+
+        boxx=lefttopX;
+        boxy=lefttopY+height25s[0];
+
+        var box50275=bplot1.append("g");
+        box50275.append("rect")
+                .attr("width",boxwidth)
+                .attr("height",height25s[1]-height25s[0])//95->75
+                .attr("x",boxx)
+                .attr("y",boxy)
+                .attr("fill","#FFFFFF")
+                .attr("fill-opacity",0.1)
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor);
+
+        var box25250=bplot1.append("g");
+
+
+        boxx2=boxx;
+        boxy2=lefttopY+height25s[1];
+
+        box25250.append("rect")
+                .attr("width",boxwidth)
+                .attr("height",height25s[2]-height25s[1])
+                .attr("x",boxx2)
+                .attr("y",boxy2)
+                .attr("fill","#FFFFFF")
+                .attr("fill-opacity",0.1)
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor);
+
+        //draw 5%~25% line
+        //draw vertical lines
+        var vline5225=bplot1.append("g");
+
+        vline5225.append("line")
+                .attr("x1",(lefttopX+righttopX)/2)
+                .attr("y1",lefttopY+height25s[2])
+                .attr("x2",(lefttopX+righttopX)/2)
+                .attr("y2",lefttopY+height25s[3])
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor)
+                .attr("stroke-dasharray",dashType);
+
+        //draw 5% horizontal lines
+        var line5=bplot1.append("g");
+
+        line5ylt=lefttopY+height25s[3];
+
+        line5.append("line")
+                .attr("x1",lefttopX)
+                .attr("y1",line5ylt)
+                .attr("x2",righttopX)
+                .attr("y2",line5ylt)
+                .attr("stroke-width",linewidth)
+                .attr("stroke",lineColor);
+
+    }
+    /*
+    console.log(calBoxPlotParam(data).join(", "));
+
+    //========Rendering the boxplot to one svg file==============
+
+    //outside container
+    var container=d3.select("body").append("svg").attr("width",300).attr("height",600);
+
+    //inner container
+
+
+
+
+    bparam=calBoxPlotParam(data);
+
+    plotHeight=200;
+    linewidth=2;
+    lefttopX=2;
+    lefttopY=2;
+    boxwidth=25;
+
+
+    var curScale=d3.scale.linear().domain([d3.min(bparam),d3.max(bparam)]).range([1,plotHeight]);
+
+
+
+
+    height25s=[curScale(bparam[4]-bparam[3]),//95->75
+                curScale(bparam[3]-bparam[2]),//75->50
+                curScale(bparam[2]-bparam[1]),//50->25
+                curScale(bparam[1]-bparam[0])];//25->5
+
+
+    width=boxwidth+2*d3.max([lefttopX,linewidth]);
+    height=d3.sum(height25s)+2*linewidth+lefttopY;
+    lineColor="black";
+    dashType="3,3"
+
+
+    //the right side position of the box
+    righttopX=boxwidth+lefttopX;
+    righttopY=lefttopY;
+
+
+    var bplot1=container.append("g").attr("width",width).attr("height",height);
+    //draw 95% line
+    var line95=bplot1.append("g");
+
+    console.log(d3.min([lefttopX+boxwidth,boxwidth-lefttopX]));
+
+    line95.append("line")
+            .attr("x1",lefttopX)
+            .attr("y1",lefttopY)
+            .attr("x2",righttopX)
+            .attr("y2",righttopY)
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor);
+
+    //draw vertical lines
+    var vline75295=bplot1.append("g");
+    vline75295.append("line")
+            .attr("x1",(lefttopX+righttopX)/2)
+            .attr("y1",lefttopY)
+            .attr("x2",(lefttopX+righttopX)/2)
+            .attr("y2",lefttopY+height25s[0])
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor)
+            .attr("stroke-dasharray",dashType);
+
+    boxx=lefttopX;
+    boxy=lefttopY+height25s[0];
+
+    var box50275=bplot1.append("g");
+    box50275.append("rect")
+            .attr("width",boxwidth)
+            .attr("height",height25s[1])//95->75
+            .attr("x",boxx)
+            .attr("y",boxy)
+            .attr("fill","#FFFFFF")
+            .attr("fill-opacity",0.1)
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor);
+
+    var box25250=bplot1.append("g");
+
+
+    boxx2=boxx;
+    boxy2=boxy+height25s[1];
+
+    box25250.append("rect")
+            .attr("width",boxwidth)
+            .attr("height",height25s[2])
+            .attr("x",boxx2)
+            .attr("y",boxy2)
+            .attr("fill","#FFFFFF")
+            .attr("fill-opacity",0.1)
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor);
+
+    //draw 5%~25% line
+    //draw vertical lines
+    var vline5225=bplot1.append("g");
+
+    vline5225.append("line")
+            .attr("x1",(lefttopX+righttopX)/2)
+            .attr("y1",boxy2+height25s[2])
+            .attr("x2",(lefttopX+righttopX)/2)
+            .attr("y2",boxy2+height25s[2]+height25s[3])
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor)
+            .attr("stroke-dasharray",dashType);
+
+    //draw 5% horizontal lines
+    var line5=bplot1.append("g");
+
+    line5ylt=boxy2+height25s[2]+height25s[3];
+
+    line5.append("line")
+            .attr("x1",lefttopX)
+            .attr("y1",line5ylt)
+            .attr("x2",righttopX)
+            .attr("y2",line5ylt)
+            .attr("stroke-width",linewidth)
+            .attr("stroke",lineColor);
+    */
+
+    var container=d3.select("body").append("svg").attr("width",300).attr("height",600);
+
+    genPlot(data,container,2,2,30,200);
+
+</script>
+
+</html>

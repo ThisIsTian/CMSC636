@@ -2,18 +2,18 @@
 
 ## Group Information
 
-* Group name: Unknown 
-* Group Idea: 
+* **Group name**: Unknown 
+* **Group Idea**: 
     1. cluster values for each attributes and then create bundles between parallel coordinates.
     2. Assign colors according to the bundle size.
     3. Assign special colors to bundles that are the goal of the task.
-* Group sketch: The group sketch according to the idea is shown in Figure 1. 
+* **Group sketch**: The group sketch according to the idea is shown in Figure 1. 
 
 <img src="./sketch.png" height="400">
 
 **Figure 1. The group sketch based on our group idea**
 
-* Pros and Cons:
+* **Pros and Cons**:
     * **Prons**: The distribution is clear and it's easy to distinguish two distributions if they are different on the same parallel coordinate
     * **Cons**: It's not every effective when the distributions of multiple data are quite similar and the size of data is very large relatively to the display.
 
