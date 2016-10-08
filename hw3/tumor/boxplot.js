@@ -35,7 +35,7 @@ function genPlot(data,container,lefttopX,lefttopY,boxwidth,plotHeight,className,
     for(var i=0;i<data.length;++i)
         bparam[i]-=lefttopY;
     //plotHeight=200;
-    linewidth=1;
+    linewidth=2;
 
     //lefttopX=2;
     //lefttopY=2;
@@ -168,10 +168,10 @@ function processData(rawData,xscale,yscale,dimensions){
         obj=rawData[i];
         organ=obj["Organ"];
         therapy=obj["Therapy"];
-        organTherapyKeyMap[organ+"_"+therapy]=true;
+        organTherapyKeyMap[therapy+"_"+organ]=true;
         for(j=0;j<dimensions.length;++j){
             attr=dimensions[j];
-            key=organ+"_"+therapy+"_"+attr
+            key=therapy+"_"+organ+"_"+attr
             if (boxplotData[key]==null)
                 boxplotData[key]=new Array();
             var tmpA=boxplotData[key];

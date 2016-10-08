@@ -254,9 +254,10 @@ var max = 70;
 
               ot=lKey.split("_");
 
-              lColor=(ot[0] === 'Tumor')? color2(ot[1],opacity) : color(ot[1],opacity)
+              lColor=(ot[1] === 'Tumor')? color2(ot[0],opacity) : color(ot[0],opacity);
+              lclass=ot[0]+ot[1].replace("Lymph Node","").replace(" ","");
               //need to use for loop to add graph to all
-              genPlot(boxplotInfo[lKey], d3.select(this), -3, d3.min(boxplotInfo[lKey]), 6, boxplotHeight,"box"+j,lColor);
+              genPlot(boxplotInfo[lKey], d3.select(this), -4, d3.min(boxplotInfo[lKey]), 8, boxplotHeight,lclass,lColor);
           }
       })
       .attr("width",36)
@@ -323,9 +324,12 @@ function create_legend(colors,brush) {
         if (_.contains(excluded_groups, d)) {
           d3.select(this).attr("title", "Hide group")
           excluded_groups = _.difference(excluded_groups,[d]);
+          //hide the boxplot for d
+          d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","visible");
           brush();
         } else {
           d3.select(this).attr("title", "Show group")
+          d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","hidden");
           excluded_groups.push(d);
           brush();
         }
@@ -677,7 +681,7 @@ function paths(selected, ctx, count) {
   // render all lines until finished or a new brush event
   function animloop(){
 
-      processData(data,xscale,yscale);
+    processData(data,xscale,yscale);
 
     if (i >= n || count < brush_count) return true;
     var max = d3.min([i+render_speed, n]);

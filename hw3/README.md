@@ -27,6 +27,15 @@
 
 ## Steps to produce the visualization
 
+1. Create a boxplot alone
+2. Parse the data to extract the information for plots
+3. Add the code to render the plot as a function
+4. Add code to toggle on/off
+
+<img src="./basicResult.png" height=400>
+
+**Figure 2. Plot two therapies in red and brown with box-and-whisker plot.**
+
 ## Change in the future
 
 # Part II: Implementation
