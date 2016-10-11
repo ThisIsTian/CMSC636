@@ -66,7 +66,7 @@ I followed the following five steps to get the correct output for the basic requ
 
 Based on the implementation in the previous section, by altering the `left top x` location of each visible boxplot in `update_boxplot`, we could generate the shifted view as illustrated in **Figure 3**.
 
-<imag src="./shiftedview.png" height=400>
+<img src="./shiftedview.png" height=400>
 
 **Figure 3. Shifted view of three therapies in brown yellow and red with box-and-whisker plot.**
 
