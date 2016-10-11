@@ -52,6 +52,7 @@ The tumor data set contains the therapy information for 108 samples, 12(therapy)
 ### Basic requirement:
 
 I followed the following five steps to get the correct output for the basic requirement
+
 1. I first design and implement the `boxplot` in `bw_plot.html`
 2. Parse the data to extract the information (i.e., the `y coordinate` for `5%`, `25%`, `50%`, `75%` and `95%`) for boxplots in the `processData` function in `boxplot.js`
 3. Add the code to render the plot as a function `genPlot`, which is called within a new `g:boxAxis` for each `g.dimension`
