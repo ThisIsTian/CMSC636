@@ -59,6 +59,7 @@ function genPlot(data,container,lefttopX,lefttopY,boxwidth,plotHeight,className,
     righttopX=boxwidth+lefttopX;
     righttopY=lefttopY;
 
+    container.select("g."+className).remove();
 
     var bplot1=container.append("g")
                 .attr("class",className)
@@ -194,4 +195,115 @@ function processData(rawData,xscale,yscale,dimensions){
     }
 
     //console.log(boxplotData);
+
+
 }
+
+function rescaleData(xscale,yscale,dimensions) {
+
+    for(var key in boxplotData){
+        keys=key.split("_");
+        x=xscale(keys[2]);
+        bpparam=calBoxPlotParam(boxplotData[key].sort(d3.ascending));
+        var ys=[];
+        for(i=0;i<bpparam.length;++i){
+            ys.push(yscale[keys[2]](bpparam[i]))
+        }
+        boxplotInfo[key]=ys;
+    }
+}
+function update_boxplot(containers,xscale,yscale){
+
+    //return;
+    //rescale to get new boxplotinfo
+    rescaleData(xscale,yscale,dimensions);
+
+    /*for(i=0;i<containers.length;++i){
+        var g=containers[i];//the boxaxis
+        g.selectAll("*").
+    }*/
+
+    var visList={}
+    var visibleCount=0;
+    //container is the g axisBox
+    containers.each(function (d,i) {
+        //console.log("containers.each("+d+" "+i+" class="+d3.select(this).attr("class"));
+        var key=null;
+
+        if (Object.keys(visList).length==0) {
+            d3.select(this).selectAll("g." + d3.select(this).attr("class") + ">g").each(function (d, i) {
+                //console.log("\t container.children.each("+d)
+                key = d3.select(this).attr("class");
+                value = d3.select(this).attr("visibility");
+                visList[key] = value == null ? "visible" : value;
+
+                //used for displaying boxplot side by side
+                if(visList[key]=="visible") {
+                    visibleCount += 1;
+                }
+            });
+        }
+
+        delta=8;//1 -4, 2,-8, 3,-12
+        xstart=-4*(visibleCount-1)-4;
+        console.log(xstart);
+        //for each box we replace the original box and set the visibility
+        for (j=0;j<organTherapyKeys.length;++j) {
+
+            lKey=organTherapyKeys[j]+"_"+d;
+
+            //calculate the color of the box-plot
+            ot=lKey.split("_");
+
+            lColor=(ot[1] === 'Tumor')? color2(ot[0],opacity) : color(ot[0],opacity);
+            lclass=ot[0]+ot[1].replace("Lymph Node","").replace(" ","");
+
+            boxplotHeight = d3.max(boxplotInfo[lKey]) - d3.min(boxplotInfo[lKey]);
+            //need to use for loop to add graph to all
+            //console.log(xstart);
+
+
+            genPlot(boxplotInfo[lKey], d3.select(this), xstart, d3.min(boxplotInfo[lKey]), 8, boxplotHeight, lclass, lColor);
+
+            if(visList[lclass]=="visible")
+                xstart+=delta;
+        }
+        //xstart=0;
+        //set the visibility of each
+        d3.select(this).selectAll("g."+d3.select(this).attr("class")+">g").each(function (d,i) {
+
+            key = d3.select(this).attr("class");
+            d3.select(this).attr("visibility", visList[key]);
+            //console.log("The visibility of g."+key+"is set to"+visList[key]);
+        });
+
+    })
+
+    //redraw
+    /*found=false;
+    for (j=0;j<organTherapyKeys.length;++j) {
+
+        lKey=organTherapyKeys[j]+"_"+d;
+
+        //calculate the color of the box-plot
+        ot=lKey.split("_");
+
+        lColor=(ot[1] === 'Tumor')? color2(ot[0],opacity) : color(ot[0],opacity);
+        lclass=ot[0]+ot[1].replace("Lymph Node","").replace(" ","");
+
+        boxplotHeight = d3.max(boxplotInfo[lKey]) - d3.min(boxplotInfo[lKey]);
+        //need to use for loop to add graph to all
+        genPlot(boxplotInfo[lKey], d3.select(this), -4, d3.min(boxplotInfo[lKey]), 8, boxplotHeight, lclass, lColor);
+    }
+
+
+    //add the visibility information
+
+    d3.select(this).select("*").each(function(d,i){
+            key = d3.select(this).attr("class");
+            d3.select(this).attr("visibility", visList[key]);
+
+            //console.log(d + "R:key:" + key + " value:" + value);
+    });*/
+}
+

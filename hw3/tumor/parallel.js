@@ -326,11 +326,14 @@ function create_legend(colors,brush) {
           excluded_groups = _.difference(excluded_groups,[d]);
           //hide the boxplot for d
           d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","visible");
+          //update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
+
           brush();
         } else {
           d3.select(this).attr("title", "Show group")
           d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","hidden");
           excluded_groups.push(d);
+          //update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
           brush();
         }
       });
@@ -763,6 +766,7 @@ function rescale() {
 
   // Render selected data
   paths(data, foreground, brush_count);
+
 }
 
 // Get polylines within extents
@@ -836,10 +840,19 @@ window.onresize = function() {
     .each(function(d) { d3.select(this).call(yscale[d].brush = d3.svg.brush().y(yscale[d]).on("brush", brush)); })
   brush_count++;
 
-  // update axis placement
+  // update the boxplot if rescaled
+  update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
+
+    // update axis placement
   axis = axis.ticks(1+height/50),
   d3.selectAll(".axis")
     .each(function(d) { d3.select(this).call(axis.scale(yscale[d])); });
+
+  // update boxAxis placement
+  //d3.selectAll(".boxAxis")
+  //    .each(function (d) {
+  //        d3.select(this).call(axis.scale(yscale[d]));
+  //    });
 
   // render data
   brush();
