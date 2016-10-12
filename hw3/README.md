@@ -41,7 +41,7 @@ The tumor data set contains the therapy information for 108 samples, 12(therapy)
 
 In the first task, we are trying to 1) map the distribution of each therapy on each attribute to one boxplot, and 2) provide a mapping for human to visually distinguish between two or more therapies. There are three mappings in the encoding process,
 
-1. Each therapy maps to one boxplot.
+1. Each therapy maps to one boxplot on each attribute.
 2. Each type of therapy maps to one specific color.
 3. The `5%, 25% 50% 75% and 95%` attribute value of each therapy's distribution among its 9 data values is mapped to the five configuration value of a boxplot.
 
@@ -59,7 +59,7 @@ I basically have two design choice while I try to implement the boxplot to visua
 
 ### Good and Bad
 
-This design is both bood and bad.
+This design is both good and bad.
 
 * Good. Boxplot clearly shows the ditribution. And if the number of boxplot is small. It's very easy to distinguish the distribution from each other on each attribute.
 * Bad. First, when most of the boxplots need to be shown on the attribute axis, it's very difficult to distinguish them from each other's distribution, even when they stay side by side. Second, when there are many boxplots on each attribute staying side by side, the coloring of adjecent boxplot should be well designed otherwise, it's not easy to see them. For example, `AIPV Tumor` is very difficult to be recognized from `AIP Lymphy` and `IPV Lymphy` when only these three is selected to show.
