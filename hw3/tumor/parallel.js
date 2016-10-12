@@ -326,14 +326,14 @@ function create_legend(colors,brush) {
           excluded_groups = _.difference(excluded_groups,[d]);
           //hide the boxplot for d
           d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","visible");
-          //update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
+          update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
 
           brush();
         } else {
           d3.select(this).attr("title", "Show group")
           d3.selectAll("."+d.replace("Lymph Node","").replace(" ","")).attr("visibility","hidden");
           excluded_groups.push(d);
-          //update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
+          update_boxplot(d3.selectAll(".boxAxis"),xscale,yscale);
           brush();
         }
       });

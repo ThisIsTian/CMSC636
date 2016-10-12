@@ -27,7 +27,7 @@ The solution we provided is as described above. However, since in class what we 
 
 In homework three, we can choose from three tasks to visualize the tumor data in `parellel coordinate`. The three tasks are: 
 
-* The first task is to develop a visualization technique to visualize the distributions for each therapy on the same attribute in such a way that we can easily distinguish between two more more therapies. 
+* The first task is to develop a visualization technique to visualize the distributions for each therapy on the same attribute in such a way that we can easily distinguish between two ore more therapies. 
 * The second task is to group the clutters between two parallel attribute so that similar items are grouped together. 
 * The last task is to develop an interaction technique to select areas of interest, which might be very strangely distributed.
 
@@ -39,10 +39,31 @@ The tumor data set contains the therapy information for 108 samples, 12(therapy)
 
 ### mapping tasks and data needs in encoding process
 
+In the first task, we are trying to 1) map the distribution of each therapy on each attribute to one boxplot, and 2) provide a mapping for human to visually distinguish between two or more therapies. There are three mappings in the encoding process,
 
+1. Each therapy maps to one boxplot.
+2. Each type of therapy maps to one specific color.
+3. The `5%, 25% 50% 75% and 95%` attribute value of each therapy's distribution among its 9 data values is mapped to the five configuration value of a boxplot.
 
 ### Design choices
+
+I basically have two design choice while I try to implement the boxplot to visualize distributions.
+* The first design choice is to decide how wide each boxplot should be so that we can see each clearly. Given the limited screen space, the width of the box should be small enough. So I selected three width parameters `4,8,12` to visually check which meet the requirement that it should be small enough to fit on the screen and large enough so that we can see it. With this criteria, I selected `8` as the width. I also find that it also looks very cool on `4k` screen.
+* The second design choice is to decide how many boxplot should be put on each attribute side by side. Since putting all 12 boxplot side by side requires a lot of space and ususally we only have a screen around `1377*768` that is relatively small. I need a threshold to decide when to put the boxplot side by side or together on the attribute line. Since the purpose of ploting the boxplot is to differentiate the distributions between different therapies. The number of distribution on the same attribute should follow the principle of our short term memory (7+=2). So based on the size limit and the memory limit. I choce 5 as the threshold. When the number of visible therapies is less or equal to 5, I will put them side by side, otherwise they shall be put on the same attribute. After the implementation, I found that 5 is too much, since there are 5 boxplots on each attribute. This is really very dstracting. After reducing the number of distributions that should stay side by side, I found that `3` is a perfect cutoff. So, the final design for boxplot that stays side by side is `below 4`.   
+
+
+### Implementation choice
+
+* The first implementation choice is to either use boxplot codes from other authors or implement the boxplot by myself. They are many available source on the website (e.g., codes [from Mike Bostock](https://bl.ocks.org/mbostock/4061502) and [Jens Grubert](http://bl.ocks.org/jensgrubert/7789216)). Since boxplot is very simple to implement and I want one `svg:g` to contain the boxplot and the homework requires us to precisely control the location, I implemented one on my own. The experimental code is in `bw_plot.html`.
+ 
+
 ### Good and Bad
+
+This design is both bood and bad.
+
+* Good. Boxplot clearly shows the ditribution. And if the number of boxplot is small. It's very easy to distinguish the distribution from each other on each attribute.
+* Bad. First, when most of the boxplots need to be shown on the attribute axis, it's very difficult to distinguish them from each other's distribution, even when they stay side by side. Second, when there are many boxplots on each attribute staying side by side, the coloring of adjecent boxplot should be well designed otherwise, it's not easy to see them. For example, `AIPV Tumor` is very difficult to be recognized from `AIP Lymphy` and `IPV Lymphy` when only these three is selected to show.
+
 ### Issues, and future fixes
 
 1. The first issue I run into is that when the web brower is resized, the boxplot is not resized accordingly. However, I have added `update_boxplot` to fix this problem.
@@ -70,6 +91,8 @@ Based on the implementation in the previous section, by altering the `left top x
 <img src="./shiftedview.png" height=400>
 
 **Figure 3. Shifted view of three therapies in brown yellow and red with box-and-whisker plot.**
+
+Based on my design choice, when the number of therapies is larger or equal to 4, all boxplots stay on the attribute. Otherwise, they will stay side by side on each attribute.
 
 ## Change in the future
 

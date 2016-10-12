@@ -244,9 +244,15 @@ function update_boxplot(containers,xscale,yscale){
             });
         }
 
-        delta=8;//1 -4, 2,-8, 3,-12
-        xstart=-4*(visibleCount-1)-4;
-        console.log(xstart);
+
+        if (visibleCount<=3) {
+            xstart = -4 * (visibleCount - 1) - 4;
+            delta = 8;//1 -4, 2,-8, 3,-12
+        }else {
+            xstart = -4;
+            delta=0;
+        }
+        //console.log(xstart);
         //for each box we replace the original box and set the visibility
         for (j=0;j<organTherapyKeys.length;++j) {
 
