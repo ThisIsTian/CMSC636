@@ -16,11 +16,14 @@ text {
     font: 14px sans-serif;
 }
 
+.center{
+    text-align: center;
+}
 </style>
 
 <body>
 
-<p>Test Matrix View</p>
+<div class="center"><p>Matrix View</p></div>
 <div id="tbi">
 
 </div>
@@ -30,11 +33,11 @@ text {
 <script src="https://d3js.org/d3-dsv.v1.min.js" ></script>
 <script>
 
-    var canvasWidth=2*window.innerWidth;
+    var canvasWidth=window.innerWidth;
     var canvasHeight=window.innerHeight;
 
-    var viewHeight=canvasHeight/2>600?600:canvasHeight/2;
-    var viewWidth=1*canvasWidth;
+    var viewHeight=canvasHeight*0.9;///2>600?600:canvasHeight/2;
+    var viewWidth=canvasWidth*0.98;
     var unitCellWidth=10;
     var unitCellHeight=10;
     var alignXPos=viewWidth/2;
@@ -46,19 +49,22 @@ text {
 
     //Help:
     // 1, http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d color
-
-    var svgTBI=d3.select("#tbi")
-                 .append("svg")
-
+    var svg=d3.select("#tbi")
+            .append("svg")
             .attr("width",viewWidth)
             .attr("height",viewHeight)
-            .append("svg:g");
+
+    var yAxis=svg.append("svg:g")
+
+    var svgTBI=svg
+            .append("svg:g").attr("transform","translate(50,0)");
+
 
     svgTBI.append('g').attr("class",'background')
             .append('rect')
             .attr("width",viewWidth)
             .attr("height",viewHeight)
-            .attr("fill",'#dddddd')
+            .attr("fill",'grey')
 
 
 
@@ -91,11 +97,14 @@ text {
                     d3.select(this).append("rect")
                             .attr("width",viewWidth)
                             .attr("height",viewHeight/numPatient)
-                            .attr("fill",'white');
+                            .attr("fill",'grey');
 
                     cellWidth=viewHeight/numPatient;
 
                     basenode=d3.select(this);
+
+                    //render the text
+                    basenode.append("text").attr("x",-20).attr('y',cellWidth*0.6).style("font-size",'10px').text("P"+d.order);
                     //draw at pos alignXPos
                     Drawcategory(basenode,cellWidth,cellWidth,alignXPos,categoryColor,d.cur);
 
@@ -111,6 +120,7 @@ text {
                     baseOffset=cellWidth;
 
                     delta=(viewWidth-alignXPos-baseOffset)/d.post.length;
+
                     //console.log('id:'+d.order+' number of post record'+d.post.length);
                     for(i=0;i<d.post.length;++i){
                         post=d.post;//data [0 or others]
