@@ -7,7 +7,7 @@
 TBI_sorted=TBI_all;
 
 patient={};
-
+patientNum=1;
 while ~isempty(TBI_sorted)
     id=TBI_sorted(1,1);
     selected=TBI_sorted(TBI_sorted(:,1)==id,:);
@@ -21,6 +21,9 @@ while ~isempty(TBI_sorted)
     s.preOrder={};
     s.postOrder={};
     s.id=TBI_sorted_Time(1,1);
+    s.order=patientNum;
+    patientNum=patientNum+1;
+
     for i =1:size(TBI_sorted_Time,1)
         
         if TBI_sorted_Time(i,2)<=0 && TBI_sorted_Time(i,4)==0 % less than
@@ -50,6 +53,11 @@ while ~isempty(TBI_sorted)
         
     end
     
+    %fix cur hasn't a sympthon error
+    if isempty(s.cur)
+        s.cur=-1;
+    end
+    
     patient=cat(1,patient,s);
     
 end
@@ -70,8 +78,11 @@ for i=1:categoryId
                 order=order+1;
             end
         end
+        
         patient{j}.preMax{i}=order-1;
+        
         order=1;
+        
         %increase  the order  for  post
         for k=length(patient{j}.post):-1:1
             

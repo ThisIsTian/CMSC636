@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+text {
+    font: 14px sans-serif;
+}
+
+</style>
+
+<body>
+
+<p>Test Matrix View</p>
+<div id="tbi">
+
+</div>
+
+<script src="d3.js" charset="utf-8"></script>
+<script src="helper.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3-dsv.v1.min.js" ></script>
+<script>
+
+    var canvasWidth=2*window.innerWidth;
+    var canvasHeight=window.innerHeight;
+
+    var viewHeight=canvasHeight/2>600?600:canvasHeight/2;
+    var viewWidth=1*canvasWidth;
+    var unitCellWidth=10;
+    var unitCellHeight=10;
+    var alignXPos=viewWidth/2;
+
+    var numPatient=0;
+
+    //color
+    var categoryColor=d3.schemeCategory20c
+
+    //Help:
+    // 1, http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d color
+
+    var svgTBI=d3.select("#tbi")
+                 .append("svg")
+
+            .attr("width",viewWidth)
+            .attr("height",viewHeight)
+            .append("svg:g");
+
+    svgTBI.append('g').attr("class",'background')
+            .append('rect')
+            .attr("width",viewWidth)
+            .attr("height",viewHeight)
+            .attr("fill",'#dddddd')
+
+
+
+    //load jason file
+    d3.json('processed.json',function(error,patients){
+        console.log('loading...')
+        //concate array objects
+        data=Array()
+        for( i in patients)
+            data=data.concat(patients[i])
+        numPatient=data.length;
+
+
+        //generating the color scale
+
+
+        //setup each patient
+        var patientRow=svgTBI.selectAll(".matview")
+                .data(data)
+                .enter()
+                .append('svg:g')
+                .attr("class",function (d) {
+                    return "patient"+d.order;
+                })    //add the patient tag
+                .attr("transform",function (d) {
+                    return "translate(0,"+(d.order-1)*viewHeight/numPatient+")";
+                }).each(function (d, i) {
+
+                    //fill the background
+                    d3.select(this).append("rect")
+                            .attr("width",viewWidth)
+                            .attr("height",viewHeight/numPatient)
+                            .attr("fill",'white');
+
+                    cellWidth=viewHeight/numPatient;
+
+                    basenode=d3.select(this);
+                    //draw at pos alignXPos
+                    Drawcategory(basenode,cellWidth,cellWidth,alignXPos,categoryColor,d.cur);
+
+                    delta=alignXPos/d.pre.length;
+                    //draw preColor
+                    for(i=0;i<d.pre.length;++i){
+                        pre=d.pre;//data [0 or others]
+
+                        //o=d.preOrder;//[-1 or other]
+                        pos=0+delta*i;
+                        Drawcategory(basenode,delta,cellWidth,pos,categoryColor,pre);
+                    }
+                    baseOffset=cellWidth;
+
+                    delta=(viewWidth-alignXPos-baseOffset)/d.post.length;
+                    //console.log('id:'+d.order+' number of post record'+d.post.length);
+                    for(i=0;i<d.post.length;++i){
+                        post=d.post;//data [0 or others]
+
+                        //o=d.preOrder;//[-1 or other]
+                        pos=alignXPos+delta*i+baseOffset;
+                        Drawcategory(basenode,delta,cellWidth,pos,categoryColor,post);
+                    }
+
+                })
+
+        //render the mattrix
+    })
+
+
+
+</script>
+
+</body>
