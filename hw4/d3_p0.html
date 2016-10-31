@@ -41,7 +41,7 @@ text {
     var unitCellWidth=10;
     var unitCellHeight=10;
     var alignXPos=viewWidth/2;
-
+    var xlabelheight=10;
     var numPatient=0;
 
     //color
@@ -51,8 +51,8 @@ text {
     // 1, http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d color
     var svg=d3.select("#tbi")
             .append("svg")
-            .attr("width",viewWidth)
-            .attr("height",viewHeight)
+            .attr("width",viewWidth+100)
+            .attr("height",viewHeight+xlabelheight)
 
     var yAxis=svg.append("svg:g")
 
@@ -66,11 +66,16 @@ text {
             .attr("height",viewHeight)
             .attr("fill",'grey')
 
+    //add the x axis description
+    svgTBI.append('g').attr("class",'xAxis').attr("transform","translate("+viewWidth/2+","+viewHeight+")")
+            .append('text').text("Time")
+            .attr("x",0).attr('y',10).style("font-size",'10px');
 
-
+    //return;
     //load jason file
     d3.json('processed.json',function(error,patients){
         console.log('loading...')
+
         //concate array objects
         data=Array()
         for( i in patients)
@@ -94,10 +99,10 @@ text {
                 }).each(function (d, i) {
 
                     //fill the background
-                    d3.select(this).append("rect")
+                    /*d3.select(this).append("rect")
                             .attr("width",viewWidth)
                             .attr("height",viewHeight/numPatient)
-                            .attr("fill",'grey');
+                            .attr("fill",'grey');*/
 
                     cellWidth=viewHeight/numPatient;
 
@@ -112,6 +117,7 @@ text {
                     //draw preColor
                     for(i=0;i<d.pre.length;++i){
                         pre=d.pre;//data [0 or others]
+
                         //o=d.preOrder;//[-1 or other]
                         pos=0+delta*i;
                         Drawcategory(basenode,delta,cellWidth,pos,categoryColor,pre);
@@ -133,6 +139,7 @@ text {
 
         //render the mattrix
     })
+
 
 
 
