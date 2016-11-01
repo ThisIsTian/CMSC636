@@ -5,20 +5,24 @@
 function Drawcategory(node, cellWidth,cellHeight,XPos,categoryColor,categoryData) {
 
     if (categoryData instanceof Array) {
-        for (i=0;i<categoryData.length;++i)
+
+        for (i=0;i<categoryData.length;++i) {
+            console.log(categoryData[i])
             node.append("rect")
-                .attr("width", cellWidth / categoryData.length)
-                .attr("height", cellHeight)
-                .attr("x", XPos + i * cellWidth / categoryData.length)
-                .attr("y", 0)
+                .attr("width", cellWidth)
+                .attr("height", cellHeight / categoryData.length)
+                .attr("x", XPos)
+                .attr("y", 0 + i * cellHeight / categoryData.length)
                 .attr("fill", function (d) {
-                    if (categoryData[i] == -1 || categoryData[i]==0)
+                    if (categoryData[i] == -1 || categoryData[i] == 0)
                         return "#000000";
                     else
-                        return categoryColor[categoryData[i]-1];
+                        return categoryColor[categoryData[i] - 1];
                 })
+        }
     }
     else{
+        console.log(categoryData)
         node.append("rect")
             .attr("width",cellWidth)
             .attr("height",cellHeight)
@@ -39,67 +43,57 @@ function Drawcategory2(node, cellWidth,cellHeight,XPos,categoryColor,categoryDat
     //reverse mean the color hue decreases as rank  increases
     if (categoryData instanceof Array) {
         for (i=index;i<index+1;++i)
-            for(j=0;j<categoryData[i].length;++j) {
+            for(j=0;j<categoryData[i].length;++j) { //the iterate he category data for all encounters
                 category=categoryData[i][j];
-                node.append("rect")
-                    .attr("width", cellWidth / categoryData[i].length)
-                    .attr("height", cellHeight)
-                    .attr("x", XPos + j * cellWidth / categoryData[i].length)
-                    .attr("y", 0)
-                    .attr("fill", function (d) {
+                //console.log(category);
 
-                        if (category == -1 || category == 0)
-                            return "#000000";
+                //the symptom of each encounter
+                if(category instanceof Array) {
+                    for (k = 0; k < category.length; ++k) {//render each symptom
+                        node.append("rect")
+                            .attr("width", cellWidth)
+                            .attr("height", cellHeight / category.length)
+                            .attr("x", XPos)
+                            .attr("y", 0 + k * cellHeight / category.length)
+                            .attr("fill", function (d) {
 
-                        curRank=categoryRank[i][0][j+1];
-                        c=categoryColor[category-1];
-                        var ramp;
-                        if (!reverse)
-                            ramp = d3.scaleLinear().domain([rankMaxlist[category-1], 1]).range(["#000000", c]);
-                        else
-                            ramp = d3.scaleLinear().domain([rankMaxlist[category-1], 1]).range([c,"#000000"]);
-                        c=ramp(curRank);
-                        return c;
-                    })
+                                if (category[k] == -1 || category[k] == 0)
+                                    return "#000000";
+
+                                curRank = categoryRank[i][0][k + 1];
+                                c = categoryColor[category[k] - 1];
+                                var ramp;
+                                if (!reverse)
+                                    ramp = d3.scaleLinear().domain([rankMaxlist[category[k] - 1]+1, 0]).range(["#000000", c]);
+                                else
+                                    ramp = d3.scaleLinear().domain([rankMaxlist[category[k] - 1]+1, 0]).range([c, "#000000"]);
+                                c = ramp(curRank);
+                                return c;
+                            })
+                    }
+                }else{
+                    //console.log('single cell')
+                    node.append("rect")
+                        .attr("width", cellWidth)
+                        .attr("height", cellHeight)
+                        .attr("x", XPos)
+                        .attr("y", 0)
+                        .attr("fill", function (d) {
+
+                            if (category == -1 || category == 0)
+                                return "#000000";
+
+                            curRank = categoryRank[i][0][1];
+                            c = categoryColor[category - 1];
+                            var ramp;
+                            if (!reverse)
+                                ramp = d3.scaleLinear().domain([rankMaxlist[category - 1]+1, 0]).range(["#000000", c]);
+                            else
+                                ramp = d3.scaleLinear().domain([rankMaxlist[category - 1]+1, 0]).range([c, "#000000"]);
+                            c = ramp(curRank);
+                            return c;
+                        })
+                }
             }
     }
-}
-
-function hsl2rgb(h,s,l){
-    //0.5,1,0.4
-    //c=0.8,x=0.8,value=0,0.8,0.8,m=0,rgb=0,0.8,0.8
-    //chroma:
-    c=(1-Math.abs(2*l-1))*s;
-
-    hp=h*6;
-
-    //intermediate value x
-    x=c*(1-Math.abs(hp%2-1));
-
-    //calculate R,G,B
-    if(hp>=0&&hp<1){
-        value=[c,x,0];
-    }else if(hp>=1&&hp<2){
-        value=[x,c,0];
-    }else if(hp>=2&&hp<3){
-        value=[0,c,x];
-    }else if(hp>=3&&hp<4){
-        value=[0,x,c];
-    }else if(hp>=4&&hp<5){
-        value=[x,0,c];
-    }else if(hp>=5&&hp<6){
-        value=[c,0,x];
-    }
-
-    //match luminance
-    m=l-0.5*c;
-
-    tmp=[value[0]+m,value[1]+m,value[2]+m];
-
-    //console.log('c='+c+',x='+x+',value='+value+',m='+m+',rgb='+tmp);
-    return tmp;
-}
-
-function rgb2hsl(r,g,b){
-
 }
