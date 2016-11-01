@@ -27,7 +27,7 @@ Based on our task requirement, the attribute we need to consider for the visuali
 
 ## Preprocessing
 
-I preprocessed the dataset using `matlab`, the processing files are:
+I preprocessed the dataset using `matlab` with `jsonlab`, the output file is `processed.json`. The processing files are:
 
 * `FilterData.m`. This script read only task-related data including `PatientID`, `Days_From1stTBI`, `Encounter_date`, `TBI_encounter_flag`, `PRE_max_days`, `POST_max_days`, and all 16 symptoms.
 * `DeriveInformation.m`. This script extract useful information for constructing the matrix view into a file `processed.json`. Those extracted important information includes:
