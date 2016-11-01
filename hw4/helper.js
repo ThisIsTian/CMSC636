@@ -15,7 +15,7 @@ function Drawcategory(node, cellWidth,cellHeight,XPos,categoryColor,categoryData
                     if (categoryData[i] == -1 || categoryData[i]==0)
                         return "#000000";
                     else
-                        return categoryColor[categoryData[i]];
+                        return categoryColor[categoryData[i]-1];
                 })
     }
     else{
@@ -28,31 +28,40 @@ function Drawcategory(node, cellWidth,cellHeight,XPos,categoryColor,categoryData
                 if (categoryData==-1|| categoryData==0)
                     return "#000000";
                 else
-                    return categoryColor[categoryData];
+                    return categoryColor[categoryData-1];
             })
     }
 }
 
 
 
-function Drawcategory(node, cellWidth,cellHeight,XPos,categoryColor,categoryData,index,categoryRank,rankMaxlist) {
-
+function Drawcategory2(node, cellWidth,cellHeight,XPos,categoryColor,categoryData,index,categoryRank,rankMaxlist,reverse) {
+    //reverse mean the color hue decreases as rank  increases
     if (categoryData instanceof Array) {
-        for (i=0;i<categoryData.length;++i)
-            node.append("rect")
-                .attr("width", cellWidth / categoryData.length)
-                .attr("height", cellHeight)
-                .attr("x", XPos + i * cellWidth / categoryData.length)
-                .attr("y", 0)
-                .attr("fill", function (d) {
+        for (i=index;i<index+1;++i)
+            for(j=0;j<categoryData[i].length;++j) {
+                category=categoryData[i][j];
+                node.append("rect")
+                    .attr("width", cellWidth / categoryData[i].length)
+                    .attr("height", cellHeight)
+                    .attr("x", XPos + j * cellWidth / categoryData[i].length)
+                    .attr("y", 0)
+                    .attr("fill", function (d) {
 
-                    if (categoryData[i] == -1 || categoryData[i]==0)
-                        return "#000000";
-                    else
-                        c=categoryColor[categoryData[i]];
+                        if (category == -1 || category == 0)
+                            return "#000000";
 
-
-                })
+                        curRank=categoryRank[i][0][j+1];
+                        c=categoryColor[category-1];
+                        var ramp;
+                        if (!reverse)
+                            ramp = d3.scaleLinear().domain([rankMaxlist[category-1], 1]).range(["#000000", c]);
+                        else
+                            ramp = d3.scaleLinear().domain([rankMaxlist[category-1], 1]).range([c,"#000000"]);
+                        c=ramp(curRank);
+                        return c;
+                    })
+            }
     }
     else{
         node.append("rect")

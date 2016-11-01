@@ -120,7 +120,7 @@ text {
 
                         //o=d.preOrder;//[-1 or other]
                         pos=0+delta*i;
-                        Drawcategory(basenode,delta,cellWidth,pos,categoryColor,pre);
+                        Drawcategory2(basenode,delta,cellWidth,pos,categoryColor,pre,i,d.preOrder,d.preMax,false);
                     }
                     baseOffset=cellWidth;
 
@@ -132,7 +132,7 @@ text {
 
                         //o=d.preOrder;//[-1 or other]
                         pos=alignXPos+delta*i+baseOffset;
-                        Drawcategory(basenode,delta,cellWidth,pos,categoryColor,post);
+                        Drawcategory2(basenode,delta,cellWidth,pos,categoryColor,post,i,d.postOrder,d.postMax,true);
                     }
 
                 })
