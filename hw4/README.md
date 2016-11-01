@@ -47,7 +47,7 @@ A screenshot of the implementation is is illustrated in Figure 1. This figure di
 
 * **Basic matrix**. As you can observe, a clear matrix view is shown in Figure 1, where y axis shows the patient sequence ordered by their patient id, and x axis is the progressing encounter. Since we are trying to align by the TBI encounter, it is not reasonable to use time.
 * **Coloring hue**. The coloring hue is implemented using `d3.schemeCategory20c`. As you can observe in Figure 1, the hue is very clear. Using 20 color for this problem is efficient enough.
-* **Coloring luminance**. The luminance is implemented in the second `Drawcategory` function. We can apply it to each cell. 
+* **Coloring luminance**. The luminance is implemented in the `Drawcategory2` function. We can apply it to each cell. 
 * **cell splitting**. I split the cell horizontally. The most obvious cell that shows the splitting is the `TBI cell` for `patient 6`. There are six symptoms at this encounter.
 
 ## Critical Evaluation
