@@ -63,31 +63,6 @@ function Drawcategory2(node, cellWidth,cellHeight,XPos,categoryColor,categoryDat
                     })
             }
     }
-    else{
-        node.append("rect")
-            .attr("width",cellWidth)
-            .attr("height",cellHeight)
-            .attr("x",XPos)
-            .attr("y",0)
-            .attr("fill",function (d) {
-                if (categoryData==-1|| categoryData==0)
-                    return "#000000";
-                else
-                    c=categoryColor[categoryData];
-
-                //check rank
-                if (categoryRank[index].length==1)
-                    return c;
-                else{
-                    var ramp=d3.scale.linear().domain([rankMaxlist[categoryData],1]).range(["#000000",c]);
-                    c=ramp(categoryRank[1])
-                    return c;
-                }
-
-            })
-
-
-    }
 }
 
 function hsl2rgb(h,s,l){
