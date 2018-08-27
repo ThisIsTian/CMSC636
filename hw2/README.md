@@ -9,7 +9,7 @@ The paper I selected from the reading list is:
 I find both the effective visualization and ineffective visualization from this paper.
 
 
-#The ineffective visualization
+# The ineffective visualization
 
 
 <img src="./ineffective.png" height="400"> 
@@ -28,7 +28,7 @@ In order to make the presentation more effective, my suggestions are as below:
 4. For those labels that occupies more that two sub-band, add a line from it to its sub-band.
 
 
-#The effective visualization
+# The effective visualization
 
 <img src="./effective.png" height="400"> 
 
@@ -42,7 +42,7 @@ In order to improve the visualization, my only suggestion is:
 
 1. For each layer of nodes, use a difference color instead of using just one color for the internal nodes and red for the leave nodes.
 
-#Citation
+# Citation
 
 \[1\], http://queue.acm.org/detail.cfm?id=1805128  "A Tour through the Visualization Zoo"
 
