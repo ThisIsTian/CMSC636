@@ -1,4 +1,4 @@
-#Part I: Design Solution
+# Part I: Design Solution
 
 ## Task description
 
@@ -23,7 +23,7 @@ Based on our task requirement, the attribute we need to consider for the visuali
 - To encode the `encounter order` of each symptom, illuminance can be used because illuminance is very good at encoding order. If its the last one of the same symptom, it will have the lowest illuminance. In our design, since we try to see if there is a change, we should compare symmetrically from the TBI day. So the illuminace decreases when an encounter is further to the TBI day.
 - To encode the patient, I choose to use `y` value. When the patient id increases, the y value decreases. This is more nature in a matrix view from my perspective.
 
-#Part II: Implementation
+# Part II: Implementation
 
 ## Preprocessing
 
