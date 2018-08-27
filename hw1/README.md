@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 
 In this project, I try to use two tools (D3 and Matlab) to visualize one diffusion tensor imaging of a brain in a way that it can better characterize different micro-structural changes. The image is stored in `data1.txt` as a space separated matrix, where each value in the matrix represents a FA (fractional anisotropy ) value (`Data Type: ratio`) in the range of [0,1]. According to [the definition of FA on Wikipedia][1], the higher the value, the higher the fiber density, axonal diameter, or myelination in white matter. An example view of this image _provided by the course_ is shown below:
 
@@ -19,7 +19,7 @@ To solve these problems, the design and implementation is arranged as bellow bas
  * _**P0**_ and _**P1**_ are implemented by **D3**. In this visualization task, I explore to encode FA as `luminance`, `saturation`, `shape`, and `radius of circle` to implement the task _**P0**_ and _**P1**_.
  * _**P2**_ and _**P3**_ are implemented by **Matlab**.
 
-#Visualization with D3
+# Visualization with D3
 
 **Basic Design**. No matter which area, the interested parts (`value > 0`) are in high spatial frequencies from the `texture` perspective. So I encode the `FA value` using `Luminance`, which is suitable for visualizing image in high spatial frequency based on \[[3]\]. By utilizing `luminance`, we can differentiate structures from the background. Another observation is that the interesting areas are formed by connected values in stripes/lines while consecutive values are very similar. If we only use `luminance`, it's difficult to capture those variance within those lines. To capture this subtle difference within lines, we can utilize `saturation varying color`, which is very suitable for human eye to capture this subtle changes (low spatial frequency).
 
@@ -53,9 +53,9 @@ For highlighting low density areas, the visualization process is similar but the
 
 However, the background color would be occupied by `white`(`value=0` maps to `rgb(255,255,255)` based on `hsl` color model). This will prevent us from seeing the low density areas. So I specially mapped `value=0` to `rgb(0,0,0)`. Although this color is original mapped high density area, it's feasible as high density area are as unimportant as the background. The result is presented in **Figure(d)**. We could observe the low density areas. However, the dark red color still draws our attention. To let the low density area draw more of our attention, I encode `FA value` to another dimension, `the radius of the circle`. The result is in **Figure 2(b)**. It shows when the density is lower the radius is larger. The low density area can apparently draw more attention.
 
-#Visualization with Matlab
+# Visualization with Matlab
 
-##Specific range
+## Specific range
 Since our purpose of this task is to characterize a specific range, such as to filter out the range `[0.3,0.5]`, we should make other areas less eye catching. To achieve this, I first try to use `circle radius` to represent the importance of the range. The mapping is as below:
   ```
   1) 0.3~0.5: the radius is set to largest.
@@ -76,7 +76,7 @@ The result is is illustrated in **Figure 3(a)**. As you can see, the low and hig
 
 **Figure 3(b)** shows the final result. The interested area is very easily to be distinguished from the other areas. Moreover, the small variation within the range is still very vivid.
 
-##FA distribution
+## FA distribution
 
 To show the FA distribution of a brain, the straightforward method is to use a histogram and then apply a fit. Matlab provides a build-in function _`histfit`_ to finish this task. **Figure 4(a)** showns a result with the configuration of `50 bins` and a `kernal` distribution estimator. 
 
@@ -88,7 +88,7 @@ To show the FA distribution of a brain, the straightforward method is to use a h
 
 Since the purpose of this task is to show the distribution instead of the bins. I fade the face and line `transperency` of the bins to `0.05` to make the fitted distribution stand out while still preserving the view of original data. The improved result is illustrated in **Figure 4(b)**. The distribution is much more clear and we can still have a glimpse of the original data.
 
-#Conclusion
+# Conclusion
 
 In this homework, I use two tools (D3 and Matlab) to explore different design options and parameters, including `Color`, `Shape`, and `Size`. Among the figures I generated, I like **Figure 3(b)** the most because I like the color and it can very vividely show the specific range.
 
@@ -96,7 +96,7 @@ The best features for matlab is i) it provides a lot of functionality which don'
 
 The best features for D3 is i) it's very lightweight and ii) can be rendered to webpage very easy. The drawback in this homework is that the webpage can't directly read `data1.txt` locally. I need to publish to a server that provide Http service, like Tomcat or use WebStorm to load the data.
 
-#Citation
+# Citation
 \[1\], https://en.wikipedia.org/wiki/Fractional_anisotropy,  "Fractional Anisotropy on Wikipedia"
 
 \[2\], http://lmt.projectsinknowledge.com/Activity/pdfs/2023_02/952.pdf, "Mean Diffusivity and Fractional Anisotropy Histograms of Patients with Multiple Sclerosis"
