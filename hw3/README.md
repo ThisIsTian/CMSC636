@@ -1,4 +1,4 @@
-#Part I: Design Solution
+# Part I: Design Solution
 
 ## Group Information
 
